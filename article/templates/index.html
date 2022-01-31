@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Dongliu's blog</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.25.0/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  </head>
+  <body>
+    <!--导航栏-->
+    <nav class="bg-neutral-100 border-gray-200 shadow px-2 sm:px-4 py-4 rounded dark:bg-gray-800">
+        <div class="container flex flex-wrap justify-between items-center mx-auto">
+          <a href="/" class="flex mx-3">
+              <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Dongliu</span>
+          </a>
+          <div class="hidden w-full mr-6 md:block md:w-auto">
+            <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+                <li>
+                    <a href="/" class="block py-2 pr-4 text-base pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">博客</a>
+                </li>              
+                <li>
+                    <a href="/micro_blog" class="block py-2 pr-4 pl-3 text-base text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">微博</a>
+                </li>
+                <li>
+                    <a href="/about" class="block py-2 pr-4 pl-3 text-base text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">关于</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <div class="container mt-10" id="app">
+        <div class="w-1/5 float-right mr-12 mt-6 ">
+            <!--分类-->
+            <div class=" shadow-lg rounded-lg bg-white">
+                <h1 class="text-center px-6 py-2 bg-blue-400 text-white rounded-t-lg">categories</h1>
+                <div class="border border-gray-200  text-gray-900" v-for="category in categories" :key="category">
+                  <a :href="[[ '/category/' + category ]]" class="block px-6 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer">[[ category ]]</a>
+                </div>
+            </div>
+            <!--标签--> 
+            <div class="shadow-lg rounded-lg bg-white mt-10">
+                <h1 class="text-center px-6 py-2 bg-blue-400 text-white rounded-t-lg">tags</h1>
+                <div class="grid grid-cols-4 gap-4 mt-5 ml-2 mr-2 mb-2">
+                    <div v-for="tag in tags" :key="tag">
+                        <a class="inline-block text-center w-14 py-1.5 bg-sky-400 text-white font-medium text-xs leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" :href="[[ '/tag/' + tag ]]">[[ tag ]]</a>
+                    </div>
+                </div>
+                <div>&nbsp;</div>
+            </div>
+        </div>
+        <div>
+            <div class="w-2/3 ml-24 mt-6 block p-6 rounded-lg shadow-lg bg-white" v-for="blog in blogs" :key="blog.title">
+                <a class="text-gray-900 text-xl leading-tight font-medium mb-3" :href="[[ '/blog/' + blog.title ]]">[[ blog.title ]]</a>
+                <p class="text-gray-700 text-base font-light mb-4 mt-1">
+                    [[ blog.text ]]
+                </p>
+                <p class="text-gray-600 text-xs">[[ blog.date ]]</p>
+            </div>
+        </div>
+    </div>
+    <!--底部声名-->
+    <footer class="absolute bottom-0 w-full text-center mt-10">
+        © Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
+    </footer>
+    <script>
+        vm = new Vue({
+            el: '#app',
+            delimiters: ['[[', ']]'],
+            data :{
+                blogs: [],
+                categories: [],
+                tags: [],
+            },
+            methods: {
+                get_blogs: function(){
+                    const _this = this;
+                    axios.get("/api/content?type=blog&page=1").then(function (res) {
+                        _this.blogs = res.data.data;
+                    });
+                },
+                get_tags: function(){
+                    const _this = this;
+                    axios.get("/api/tags").then(function (res) {
+                        _this.tags = res.data.data;
+                    });
+                },
+                get_categories: function(){
+                    const _this = this;
+                    axios.get("/api/categories").then(function (res) {
+                        _this.categories = res.data.data;
+                    });
+                },
+            },
+            mounted(){
+                this.get_blogs()
+                this.get_tags()
+                this.get_categories()
+                console.log(this.tags)
+            }
+        })
+    </script>
+  </body>
+</html>
