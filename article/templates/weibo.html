@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Dongliu's micro blog</title>
+      <script src="https://dongliu-1301367244.cos.ap-shanghai.myqcloud.com/file/tailwindcss.js"></script>
+      <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.25.0/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    </head>
+  <body>
+    <!--导航栏-->
+    <nav class="bg-neutral-100 border-gray-200 shadow px-2 sm:px-4 py-4 rounded dark:bg-gray-800">
+        <div class="container flex flex-wrap justify-between items-center mx-auto">
+          <a href="/" class="flex mx-3">
+              <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Dongliu</span>
+          </a>
+          <div class="hidden w-full mr-6 md:block md:w-auto">
+            <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+                <li>
+                    <a href="/" class="block py-2 pr-4 text-base pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">博客</a>
+                </li>              
+                <li>
+                    <a href="/micro_blog" class="block py-2 pr-4 pl-3 text-base text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">微博</a>
+                </li>
+                <li>
+                    <a href="/about" class="block py-2 pr-4 pl-3 text-base text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">关于</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <div class="mt-6" id="app">
+        <div class="flex justify-center mt-4" v-for="item in items" :key="item.date">
+            <div class=" block p-6 rounded-lg shadow-lg bg-white w-2/3">
+                <span class="text-gray-700 text-base mb-4" v-html="item.text">
+                </span>
+                <p class="text-gray-600 text-xs">[[ item.date ]]</p>
+            </div>
+        </div>
+    </div>  
+    <!--底部声名-->
+    <footer class="absolute bottom-0 w-full text-center mt-10">
+        © Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
+    </footer>
+    <script>
+        vm = new Vue({
+            el: '#app',
+            delimiters: ['[[', ']]'],
+            data :{
+                items: []
+            },
+            methods:{
+                Get_items: function(){
+                    const _this = this;
+                    axios.get("/api/content?type=micro_blog&page=1").then(function (res) {
+                        _this.items = res.data.data;
+                    });
+                }
+            },
+            mounted(){
+                this.Get_items()
+            }
+        })
+    </script>
+  </body>
+</html>

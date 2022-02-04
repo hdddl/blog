@@ -1,50 +1,104 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from article.models import blog, micro_blog
+from django.utils.timezone import get_current_timezone
+from django.http import JsonResponse, HttpResponse
+from article.models import Blog, Micro_blog, Tags, Categories, Pages
+from datetime import datetime as dt
+from .convert import markdown2html
 
 
-# ÍøÕ¾Ê×Ò³
-def index(request):
+# ç½‘ç«™é¦–é¡µ
+def index_page(request):
     return render(request, "index.html")
 
 
-# »ñÈ¡ÎÄÕÂÄ¿Â¼£¬Ä¬ÈÏÒ»Ò³Îª10Ìõ¡£
+# åˆ†ç±»é¡µ
+def category_page(request):
+    return render(request, "index.html")
+
+
+# æ ‡ç­¾é¡µ
+def tags_page(request):
+    return render(request, "index.html")
+
+
+# å¾®åšé¡µ
+def micro_blog_page(request):
+    return render(request, "weibo.html")
+
+
+# å…³äºé¡µé¢
+def about_page(request):
+    about = Pages.objects.values_list(
+        "html_text", "markdown_text", "modify_date", "html_generate_date"
+    ).filter(name='about')
+    if about.exists():
+        html_text, markdown_text, modify_date, html_generate_date = about[0]
+        if modify_date is None or html_text is None or modify_date > html_generate_date:
+            html_text = markdown2html(markdown_text, template=True, standalone=True)
+            model = Pages.objects.filter(name='about')[0]
+            model.html_text = html_text
+            model.html_generate_date = dt.now(tz=get_current_timezone())
+            model.save()
+        return HttpResponse(html_text)
+    else:
+        return HttpResponse("<h1>Page not found</h1")
+
+
+# åšå®¢æ–‡ç« é¡µ
+def blog_article_page(request):
+    title = request.GET.get("title")
+    content = Blog.objects.values_list("html_text", "markdown_text", "modify_date", "html_generate_date").filter(
+        title=title)[0]
+    if content:
+        html_text, markdown_text, modified_date, html_generate_date = content
+        if html_text is None or html_generate_date < modified_date:
+            model = Blog.objects.filter(title=title)[0]
+            html_text = markdown2html(markdown_text=markdown_text, template=True, standalone=True)
+            model.html_text = html_text
+            model.html_generate_date = dt.now(tz=get_current_timezone())
+            model.save()
+        return HttpResponse(html_text)
+    else:
+        return HttpResponse("404 Not found")
+
+
+# è·å–æ–‡ç« ç›®å½•ï¼Œé»˜è®¤ä¸€é¡µä¸º10æ¡ã€‚
 def api_content(request):
-    # »ñÈ¡ÎÄÕÂÀàĞÍ£¬²©¿Í»òÕßÊÇÎ¢²©
+    # è·å–æ–‡ç« ç±»å‹ï¼Œåšå®¢æˆ–è€…æ˜¯å¾®åš
     content_type = request.GET.get("type")
-    # »ñÈ¡Ò³Ãæ£¬Ä¬ÈÏÒ»Ò³10Ìõ
+    # è·å–é¡µé¢ï¼Œé»˜è®¤ä¸€é¡µ10æ¡
     page = request.GET.get("page")
-    # ¹¹½¨ÏìÓ¦JSON
+    # æ„å»ºå“åº”JSON
     response_data = {
         "status": False,
         "msg": "",
         "data": []
     }
-    # ÑéÖ¤ÀàĞÍ²ÎÊıÊÇ·ñÕıÈ·
+    # éªŒè¯ç±»å‹å‚æ•°æ˜¯å¦æ­£ç¡®
     if content_type != "blog" and content_type != "micro_blog":
         response_data['msg'] = "parameter type worry"
         return JsonResponse(response_data)
-    # ÑéÖ¤pageÒ³Ãæ²ÎÊıÊÇ·ñ´íÎó
+    # éªŒè¯pageé¡µé¢å‚æ•°æ˜¯å¦é”™è¯¯
     if page.isdigit() and int(page) > 0:
         page = int(page)
     else:
         response_data['msg'] = "parameter page worry"
         return JsonResponse(response_data)
-    # ĞŞ¸ÄÏìÓ¦×´Ì¬
+    # ä¿®æ”¹å“åº”çŠ¶æ€
     response_data['status'] = True
     if content_type == "blog":
-        items = blog.objects.values_list("title", "pubdate", "abstract")
-        # ÌØ¶¨µÄ·ÖÀà
+        items = Blog.objects.values_list("title", "pubdate", "abstract")
+        # ç‰¹å®šçš„åˆ†ç±»
         category = request.GET.get("category")
-        # ÌØ¶¨µÄ±êÇ©
+        # ç‰¹å®šçš„æ ‡ç­¾
         tags = request.GET.get("tag")
-        # ·ÖÀà
+        # åˆ†ç±»
         if category:
             items = items.filter(category=category)
         if tags:
             items = items.filter(tags=tags)
-        # ÏÖÔÚÊıÁ¿
-        items = items[(page - 1) * 10: 10 * page]
+        # ç°åœ¨æ•°é‡
+        items = items.order_by('-pubdate')[(page - 1) * 10: 10 * page]
         for i in items:
             title, date, text = i
             response_data['data'].append(
@@ -52,63 +106,67 @@ def api_content(request):
             )
         return JsonResponse(response_data)
     else:
-        items = micro_blog.objects.values_list("pubdate", "content")[(page - 1) * 15: 10 * page]
-        for i in items:
-            date, text = i
-            response_data['data'].append(
-                {"date": date, "text": text}
-            )
+        items = Micro_blog.objects.values_list(
+            "pubdate", "modify_date", "html_generate_date", "markdown_text", "html_text"
+        ).order_by('-pubdate')[(page - 1) * 15: 10 * page]
+        for item in items:
+            pubdate, modify_date, html_generate_date, markdown_text, html_text = item
+            if (html_text is None) or (html_generate_date is None) or (html_generate_date < modify_date):
+                model = Micro_blog.objects.filter(pubdate=pubdate)[0]
+                html_text = markdown2html(markdown_text=markdown_text)
+                model.html_text = html_text
+                model.html_generate_date = dt.now(tz=get_current_timezone())
+                model.save()
+            response_data['data'].append({'date': pubdate, 'text': html_text})
         return JsonResponse(response_data)
 
 
-# »ñÈ¡ÎÄÕÂÕıÎÄAPI
-def api_blog(request):
-    # »ñÈ¡ÎÄÕÂ±êÌâ
-    title = request.GET.get("title")
-    # ¹¹½¨ÏìÓ¦JSON
-    response_data = {
-        "status": False,
-        "msg": "",
-        "data": []
-    }
-    item = blog.objects.values_list("content").filter(title=title)
+def api_pages(request):
+    name = request.GET.get("name")
+    item = Pages.objects.values_list(
+        "text_type", "modify_date", "html_generate_date", "html_text", "markdown_text"
+    ).filter(name=name)
     if item.exists():
-        response_data['status'] = True
-        response_data['data'].append({"text": item[0][0]})
-        return JsonResponse(response_data)
+        text_type, modify_date, html_generate_date, html_text, markdown_text = item[0]
+        if text_type == 'html':
+            return HttpResponse(html_text)
+        if html_generate_date is None or modify_date is None or modify_date < html_generate_date:
+            model = Pages.objects.filter(name=name)[0]
+            html_text = markdown2html(markdown_text=markdown_text, template=True, standalone=True)
+            model.html_text = html_text
+            model.html_generate_date = dt.now(tz=get_current_timezone())
+            model.save()
+            return HttpResponse(html_text)
     else:
-        response_data['msg'] = "article is not find"
-        return JsonResponse(response_data)
+        return HttpResponse("Not found")
 
 
-# »ñÈ¡categories
+# è·å–categories
 def api_categories(request):
-    # ¹¹½¨ÏìÓ¦JSON
+    # æ„å»ºå“åº”JSON
     response_data = {
         "status": True,
         "msg": "",
         "data": [],
     }
-    categories = blog.objects.values("category")
+    categories = Categories.objects.values("name")
     for i in categories:
-        i = i['category']
+        i = i['name']
         if i not in response_data['data']:
             response_data['data'].append(i)
     return JsonResponse(response_data)
 
 
-# »ñÈ¡tags
+# è·å–tags
 def api_tags(request):
-    # ¹¹½¨ÏìÓ¦JSON
+    # æ„å»ºå“åº”JSON
     response_data = {
         "status": True,
         "msg": "",
         "data": [],
     }
-    tags = blog.objects.values("tags")
+    tags = Tags.objects.values("name")
     for i in tags:
-        i = i['tags'].split(',')
-        for j in i:
-            if j not in response_data['data']:
-                response_data['data'].append(j)
+        i = i['name']
+        response_data['data'].append(i)
     return JsonResponse(response_data)

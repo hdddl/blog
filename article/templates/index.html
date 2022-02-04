@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Dongliu's blog</title>
-      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://dongliu-1301367244.cos.ap-shanghai.myqcloud.com/file/tailwindcss.js"></script>
       <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.25.0/axios.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   </head>
@@ -31,12 +31,12 @@
         </div>
     </nav>
     <div class="container mt-10" id="app">
-        <div class="w-1/5 float-right mr-12 mt-6 ">
+        <div class="w-1/6 float-right mr-12 mt-6 invisible lg:visible">
             <!--分类-->
             <div class=" shadow-lg rounded-lg bg-white">
                 <h1 class="text-center px-6 py-2 bg-blue-400 text-white rounded-t-lg">categories</h1>
                 <div class="border border-gray-200  text-gray-900" v-for="category in categories" :key="category">
-                  <a :href="[[ '/category/' + category ]]" class="block px-6 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer">[[ category ]]</a>
+                  <a :href="[[ '/categories?category=' + category ]]" class="block px-6 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-0 focus:bg-gray-200 focus:text-gray-600 transition duration-500 cursor-pointer">[[ category ]]</a>
                 </div>
             </div>
             <!--标签--> 
@@ -44,7 +44,7 @@
                 <h1 class="text-center px-6 py-2 bg-blue-400 text-white rounded-t-lg">tags</h1>
                 <div class="grid grid-cols-4 gap-4 mt-5 ml-2 mr-2 mb-2">
                     <div v-for="tag in tags" :key="tag">
-                        <a class="inline-block text-center w-14 py-1.5 bg-sky-400 text-white font-medium text-xs leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" :href="[[ '/tag/' + tag ]]">[[ tag ]]</a>
+                        <a  :href="[[ '/tags?tag=' + tag ]]" class="inline-block text-center w-14 py-1.5 bg-sky-400 text-white font-medium text-xs leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">[[ tag ]]</a>
                     </div>
                 </div>
                 <div>&nbsp;</div>
@@ -52,7 +52,7 @@
         </div>
         <div>
             <div class="w-2/3 ml-24 mt-6 block p-6 rounded-lg shadow-lg bg-white" v-for="blog in blogs" :key="blog.title">
-                <a class="text-gray-900 text-xl leading-tight font-medium mb-3" :href="[[ '/blog/' + blog.title ]]">[[ blog.title ]]</a>
+                <a class="text-gray-900 text-xl leading-tight font-medium mb-3" :href="[[ '/blog?title=' + blog.title ]]">[[ blog.title ]]</a>
                 <p class="text-gray-700 text-base font-light mb-4 mt-1">
                     [[ blog.text ]]
                 </p>
@@ -74,9 +74,9 @@
                 tags: [],
             },
             methods: {
-                get_blogs: function(){
+                get_blogs: function(url){
                     const _this = this;
-                    axios.get("/api/content?type=blog&page=1").then(function (res) {
+                    axios.get(url).then(function (res) {
                         _this.blogs = res.data.data;
                     });
                 },
@@ -94,10 +94,17 @@
                 },
             },
             mounted(){
-                this.get_blogs()
+                const href = window.location.href.split('/');
+                const path = href[href.length - 1];
+                let url;
+                if(path === ""){
+                    url = "/api/content?type=blog&page=1"
+                }else{
+                    url = "/api/content?type=blog&page=1&" + path.split("?")[0] + path.split("&")[1]
+                }
+                this.get_blogs(url)
                 this.get_tags()
                 this.get_categories()
-                console.log(this.tags)
             }
         })
     </script>
