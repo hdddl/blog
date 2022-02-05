@@ -53,9 +53,9 @@ def about_page(request):
 def blog_article_page(request):
     title = request.GET.get("title")
     content = Blog.objects.values_list("html_text", "markdown_text", "modify_date", "html_generate_date").filter(
-        title=title)[0]
+        title=title)
     if content:
-        html_text, markdown_text, modified_date, html_generate_date = content
+        html_text, markdown_text, modified_date, html_generate_date = content[0]
         if html_text is None or html_generate_date < modified_date:
             model = Blog.objects.filter(title=title)[0]
             html_text = markdown2html(markdown_text=markdown_text, template=True, standalone=True)
