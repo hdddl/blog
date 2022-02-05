@@ -20,3 +20,5 @@ urlpatterns = [
     path('', include('article.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = 'article.views.page_not_found'

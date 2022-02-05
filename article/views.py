@@ -11,6 +11,11 @@ def index_page(request):
     return render(request, "index.html")
 
 
+# 404页面
+def page_not_found(request, *args, **argv):
+    return render(request, "404.html")
+
+
 # 分类页
 def category_page(request):
     return render(request, "index.html")
@@ -108,7 +113,7 @@ def api_content(request):
     else:
         items = Micro_blog.objects.values_list(
             "pubdate", "modify_date", "html_generate_date", "markdown_text", "html_text"
-        ).order_by('-pubdate')[(page - 1) * 15: 10 * page]
+        ).order_by('-pubdate')[(page - 1) * 10: 10 * page]
         for item in items:
             pubdate, modify_date, html_generate_date, markdown_text, html_text = item
             if (html_text is None) or (html_generate_date is None) or (html_generate_date < modify_date):
