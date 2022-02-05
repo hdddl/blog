@@ -22,6 +22,7 @@
     <orderEntry type="library" name="axios" level="application" />
     <orderEntry type="library" name="vue-simple-markdown" level="application" />
     <orderEntry type="library" name="markdown-it" level="application" />
+    <orderEntry type="library" name="flowbite" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="format" value="PLAIN" />

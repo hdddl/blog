@@ -4,7 +4,16 @@
     <meta charset="utf-8" />
     <meta name="generator" content="pandoc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-                <title>404</title>
+    $for(author-meta)$
+        <meta name="author" content="$author-meta$" />
+    $endfor$
+    $if(date-meta)$
+        <meta name="dcterms.date" content="$date-meta$" />
+    $endif$
+    $if(keywords)$
+        <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
+     $endif$
+    <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
     <style type="text/tailwindcss">
         h1 {
             @apply text-2xl font-medium;
@@ -24,14 +33,31 @@
         span.smallcaps{font-variant: small-caps;}
         span.underline{text-decoration: underline;}
         div.column{display: inline-block; vertical-align: top; width: 50%;}
+    $if(quotes)$
+        q { quotes: "“" "”" "‘" "’"; }
+    $endif$
+    </style>
+    $if(highlighting-css)$
+        <style type="text/css">
+        $highlighting-css$
         </style>
-      {% load static %}
-      <script src="{% static 'js/tailwindcss.js' %}"></script>
-      <script src="{% static 'js/flowbite.js' %}"></script>
+    $endif$
+    $for(css)$
+        <link rel="stylesheet" href="$css$" />
+    $endfor$
+    $if(math)$
+        $math$
+    $endif$
+    $for(header-includes)$
+        $header-includes$
+    $endfor$
+    <script src="static/js/tailwindcss.js"></script>
+    <script src="static/js/flowbite.js"></script>
+
   </head>
   <body>
     <!--导航栏-->
-    <nav class="bg-neutral-100 border-gray-200 shadow px-2 sm:px-4 py-4 rounded dark:bg-gray-800">
+   <nav class="bg-neutral-100 border-gray-200 shadow px-2 sm:px-4 py-4 rounded dark:bg-gray-800">
       <div class="container flex flex-wrap justify-between items-center mx-auto">
         <a href="/" class="flex">
             <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Dongliu</span>
@@ -56,10 +82,37 @@
         </div>
       </div>
     </nav>
-    <div class="flex h-80 justify-center items-center">    
-        <h1>404 Not Found</h1>
+    <div class="mt-16 relative w-full px-10 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
+        $for(include-before)$
+            $include-before$
+        $endfor$
+        $if(title)$
+        <header id="title-block-header">
+        <h1 class="title text-3xl font-medium">$title$</h1>
+        $if(subtitle)$
+        <p class="subtitle">$subtitle$</p>
+        $endif$
+        $for(author)$
+        <p class="author">$author$</p>
+        $endfor$
+        $if(date)$
+        <p class="date font-light">$date$</p>
+        $endif$
+        </header>
+        $endif$
+        $if(toc)$
+        <nav id="$idprefix$TOC">
+        $table-of-contents$
+        </nav>
+        $endif$
+        <div class="mt-10">
+            $body$
+            $for(include-after)$
+            $include-after$
+            $endfor$
+        </div>
 
-    </div>  
+    </div>
     <!--底部声名
     <footer class="relative bottom-0 w-full text-center mt-10">
         © Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
