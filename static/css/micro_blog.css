@@ -965,6 +965,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: relative;
 }
 
+.bottom-10 {
+  bottom: 2.5rem;
+}
+
+.left-10 {
+  left: 2.5rem;
+}
+
 .bottom-0 {
   bottom: 0px;
 }
@@ -1657,3 +1665,4 @@ Ensure the default browser behavior of the `hidden` attribute.
     padding-bottom: 7rem;
   }
 }
+
