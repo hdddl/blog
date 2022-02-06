@@ -4,12 +4,13 @@ import subprocess
 
 def markdown2html(markdown_text, template=False, standalone=False):
     mathjax_url = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    template_url = "http://localhost:8000/api/pages?name=template.html"
+    template_url = "https://blog.dongliu.site/static/html/template.html"
     cmd = [
         'pandoc',
         '-f', 'markdown',
         '-t', 'html',
         '--mathjax=' + mathjax_url,
+        '--highlight=zenburn'
     ]
     if template:
         cmd.append('--template')
