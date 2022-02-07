@@ -115,7 +115,8 @@
                     if(path === ""){
                         url = "/api/content?type=blog&page=" + this.current_page.toString()
                     }else{
-                        url = "/api/content?type=blog&page=" + this.current_page.toString() + "&" + path.split("?")[0] + path.split("&")[1]
+
+                        url = "/api/content?type=blog&page=" + this.current_page.toString() + "&" + path.split("?")[1]
                     }
                     const _this = this;
                     axios.get(url).then(function (res) {

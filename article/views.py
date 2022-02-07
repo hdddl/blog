@@ -56,12 +56,16 @@ def blog_article_page(request):
         title=title)
     if content:
         html_text, markdown_text, modified_date, html_generate_date = content[0]
-        if html_text is None or html_generate_date < modified_date:
+        if html_text is None or html_generate_date is None or html_generate_date < modified_date:
             model = Blog.objects.filter(title=title)[0]
             html_text = markdown2html(markdown_text=markdown_text, template=True, standalone=True)
             model.html_text = html_text
             model.html_generate_date = dt.now(tz=get_current_timezone())
             model.save()
+        # 记录访客数
+        model = Blog.objects.filter(title=title)[0]
+        model.visits += 1
+        model.save()
         return HttpResponse(html_text)
     else:
         return HttpResponse("404 Not found")
@@ -92,18 +96,18 @@ def api_content(request):
     # 修改响应状态
     response_data['status'] = True
     if content_type == "blog":
-        items = Blog.objects.values_list("title", "pubdate", "abstract")
+        items = Blog.objects
         # 特定的分类
         category = request.GET.get("category")
         # 特定的标签
         tags = request.GET.get("tag")
         # 分类
         if category:
-            items = items.filter(category=category)
+            items = items.filter(category__name=category)
         if tags:
-            items = items.filter(tags=tags)
+            items = items.filter(tags__name=tags)
         # 现在数量
-        items = items.order_by('-pubdate')[(page - 1) * 10: 10 * page]
+        items = items.values_list("title", "pubdate", "abstract").order_by('-pubdate')[(page - 1) * 10: 10 * page]
         for i in items:
             title, date, text = i
             response_data['data'].append(
@@ -175,3 +179,4 @@ def api_tags(request):
         i = i['name']
         response_data['data'].append(i)
     return JsonResponse(response_data)
+
