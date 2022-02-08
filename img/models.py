@@ -24,7 +24,7 @@ class Image(models.Model):
     # 添加时间
     pubdate = models.DateTimeField(auto_now_add=True)
     # 图片
-    image = models.ImageField(upload_to='image/')
+    image = models.FileField(upload_to='image/')
 
     def __str__(self):
         return self.name
