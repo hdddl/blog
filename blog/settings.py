@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "article.apps.ArticleConfig",
+    "img.apps.ImgConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,7 +73,6 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 from .env import DATABASES
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -111,6 +111,8 @@ from os import path
 STATIC_URL = '/static/'
 STATIC_ROOT = path.join(BASE_DIR, 'static')
 
+# 媒体文件目录
+MEDIA_ROOT = path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

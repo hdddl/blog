@@ -2,6 +2,12 @@ from django.db import models
 
 
 # Create your models here.
+class TimeStampMixin(models.Model):
+    pubdate = models.DateTimeField(auto_now_add=True)
+    modify_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
 
 # 博客tags
 class Tags(models.Model):
@@ -27,7 +33,7 @@ class Categories(models.Model):
         return self.name
 
 
-class Blog(models.Model):
+class Blog(TimeStampMixin):
     # 文章标题
     title = models.CharField(max_length=50, unique=True)
     # 文章作者
@@ -37,15 +43,11 @@ class Blog(models.Model):
     # 文章摘要
     abstract = models.TextField(null=True)
     # markdown文章正文
-    markdown_text = models.TextField(default='# 无内容')
+    markdown_text = models.TextField(default=' ')
     # html文章正文
     html_text = models.TextField(null=True, blank=True)
-    # 文章发布时间
-    pubdate = models.DateTimeField()
-    # 文章修改时间
-    modify_date = models.DateTimeField(null=True, blank=True)
-    # 文章HTML生成时间
-    html_generate_date = models.DateTimeField(null=True, blank=True)
+    # 是否需要更新
+    updated = models.BooleanField(default=False)
     # 文章分类
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     # 文章标签(多对多关系)
@@ -59,13 +61,9 @@ class Blog(models.Model):
         verbose_name_plural = "博客"
 
 
-class Micro_blog(models.Model):
-    # 发布时间
-    pubdate = models.DateField(unique=True)
-    # 文章修改时间
-    modify_date = models.DateTimeField(null=True, blank=True)
-    # 文章HTML生成时间
-    html_generate_date = models.DateTimeField(null=True, blank=True)
+class Micro_blog(TimeStampMixin):
+    # 是否需要更新
+    updated = models.BooleanField(default=False)
     # markdown文章正文
     markdown_text = models.TextField()
     # html文章正文
@@ -80,12 +78,10 @@ class Micro_blog(models.Model):
 
 
 # 一些特殊页面
-class Pages(models.Model):
+class Pages(TimeStampMixin):
     name = models.CharField(max_length=20, unique=True)
-    # 文章修改时间
-    modify_date = models.DateTimeField(null=True, blank=True)
-    # 文章HTML生成时间
-    html_generate_date = models.DateTimeField(null=True, blank=True)
+    # 是否需要更新
+    updated = models.BooleanField(default=False)
     # markdown文章正文
     markdown_text = models.TextField(null=True, blank=True)
     # html文章正文

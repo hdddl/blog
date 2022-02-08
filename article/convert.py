@@ -4,7 +4,7 @@ import subprocess
 
 def markdown2html(markdown_text, template=False, standalone=False):
     mathjax_url = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    template_url = "https://blog.dongliu.site/static/html/template.html"
+    template_url = "http://localhost:8000/static/html/template.html"
     cmd = [
         'pandoc',
         '-f', 'markdown',

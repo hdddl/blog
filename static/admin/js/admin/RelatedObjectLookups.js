@@ -45,7 +45,7 @@
         if (value) {
             siblings.each(function() {
                 const elm = $(this);
-                elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
+                elm.attr('href', elm.attr('data-href-templates').replace('__fk__', value));
             });
         } else {
             siblings.removeAttr('href');

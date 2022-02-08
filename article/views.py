@@ -1,8 +1,6 @@
 from django.shortcuts import render
-from django.utils.timezone import get_current_timezone
 from django.http import JsonResponse, HttpResponse
 from article.models import Blog, Micro_blog, Tags, Categories, Pages
-from datetime import datetime as dt
 from .convert import markdown2html
 
 
@@ -34,15 +32,16 @@ def micro_blog_page(request):
 # 关于页面
 def about_page(request):
     about = Pages.objects.values_list(
-        "html_text", "markdown_text", "modify_date", "html_generate_date"
+        "html_text", "markdown_text", "updated"
     ).filter(name='about')
     if about.exists():
-        html_text, markdown_text, modify_date, html_generate_date = about[0]
-        if modify_date is None or html_text is None or modify_date > html_generate_date:
+        html_text, markdown_text, updated = about[0]
+        # 如果没有更新则更新数据
+        if not updated:
             html_text = markdown2html(markdown_text, template=True, standalone=True)
             model = Pages.objects.filter(name='about')[0]
             model.html_text = html_text
-            model.html_generate_date = dt.now(tz=get_current_timezone())
+            model.updated = True
             model.save()
         return HttpResponse(html_text)
     else:
@@ -52,15 +51,15 @@ def about_page(request):
 # 博客文章页
 def blog_article_page(request):
     title = request.GET.get("title")
-    content = Blog.objects.values_list("html_text", "markdown_text", "modify_date", "html_generate_date").filter(
+    content = Blog.objects.values_list("html_text", "markdown_text", "updated").filter(
         title=title)
     if content:
-        html_text, markdown_text, modified_date, html_generate_date = content[0]
-        if html_text is None or html_generate_date is None or html_generate_date < modified_date:
+        html_text, markdown_text, updated = content[0]
+        if not updated:
             model = Blog.objects.filter(title=title)[0]
             html_text = markdown2html(markdown_text=markdown_text, template=True, standalone=True)
             model.html_text = html_text
-            model.html_generate_date = dt.now(tz=get_current_timezone())
+            model.updated = True
             model.save()
         # 记录访客数
         model = Blog.objects.filter(title=title)[0]
@@ -116,15 +115,15 @@ def api_content(request):
         return JsonResponse(response_data)
     else:
         items = Micro_blog.objects.values_list(
-            "pubdate", "modify_date", "html_generate_date", "markdown_text", "html_text"
+            "pubdate", "updated", "markdown_text", "html_text"
         ).order_by('-pubdate')[(page - 1) * 10: 10 * page]
         for item in items:
-            pubdate, modify_date, html_generate_date, markdown_text, html_text = item
-            if (html_text is None) or (html_generate_date is None) or (html_generate_date < modify_date):
+            pubdate, updated, markdown_text, html_text = item
+            if not updated:
                 model = Micro_blog.objects.filter(pubdate=pubdate)[0]
                 html_text = markdown2html(markdown_text=markdown_text)
                 model.html_text = html_text
-                model.html_generate_date = dt.now(tz=get_current_timezone())
+                model.updated = True
                 model.save()
             response_data['data'].append({'date': pubdate, 'text': html_text})
         return JsonResponse(response_data)
@@ -133,17 +132,17 @@ def api_content(request):
 def api_pages(request):
     name = request.GET.get("name")
     item = Pages.objects.values_list(
-        "text_type", "modify_date", "html_generate_date", "html_text", "markdown_text"
+        "text_type", "updated", "html_text", "markdown_text"
     ).filter(name=name)
     if item.exists():
-        text_type, modify_date, html_generate_date, html_text, markdown_text = item[0]
+        text_type, updated, html_text, markdown_text = item[0]
         if text_type == 'html':
             return HttpResponse(html_text)
-        if html_generate_date is None or modify_date is None or modify_date < html_generate_date:
+        if not updated:
             model = Pages.objects.filter(name=name)[0]
             html_text = markdown2html(markdown_text=markdown_text, template=True, standalone=True)
             model.html_text = html_text
-            model.html_generate_date = dt.now(tz=get_current_timezone())
+            model.updated = True
             model.save()
             return HttpResponse(html_text)
     else:

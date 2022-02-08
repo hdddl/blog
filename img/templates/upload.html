@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dongliu图床</title>
+</head>
+<body>
+    <div>
+        <form action="/img/upload" method="post" enctype="multipart/form-data">
+            <label for="name">图片名称</label>
+            <input type="text" id="name" name="name">
+            <br>
+            <label for="album">图片分类</label>
+            <select id="album" name="album">
+                <option value="1">未分类</option>
+                <option value="2">test</option>
+            </select>
+            <br>
+            <label for="image">图片</label>
+            <input type="file" id="image" name="image">
+            <br>
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>
