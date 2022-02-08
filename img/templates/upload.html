@@ -6,7 +6,7 @@
 </head>
 <body>
     <div>
-        <form action="/img/upload" method="post" enctype="multipart/form-data">
+        <form action="/img/upload" method="post" enctype="multipart/form-data">{% csrf_token %}
             <label for="name">图片名称</label>
             <input type="text" id="name" name="name">
             <br>
