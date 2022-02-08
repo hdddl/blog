@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import  JsonResponse
 from .forms import UploadImage
 
 
@@ -15,14 +14,12 @@ def upload(request):
         response_data = {
             "status": False,
             "msg": "Image format error!",
-            "data": []
+            "path": ""
         }
         form = UploadImage(request.POST, request.FILES)
         if form.is_valid():
             response_data['status'] = True
             response_data['msg'] = "Image upload successfully"
             entry = form.save()
-            response_data['data'].append(
-                {'path': entry.image.url}
-            )
+            response_data['path'] = entry.image.url
         return JsonResponse(response_data)
