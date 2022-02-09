@@ -5,7 +5,6 @@ from .models import Blog, Micro_blog, Categories, Tags, Pages
 
 # Register your models here.
 class auto_update(admin.ModelAdmin):
-
     # ÷ÿ–¥save_model
     def save_model(self, request, obj, form, change):
         obj.updated = False
