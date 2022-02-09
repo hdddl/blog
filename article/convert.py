@@ -7,7 +7,7 @@ def markdown2html(markdown_text, template=False, standalone=False):
     template_url = "http://localhost:8000/static/html/template.html"
     cmd = [
         'pandoc',
-        '-f', 'markdown',
+        '-f', 'markdown+implicit_figures',
         '-t', 'html',
         '--mathjax=' + mathjax_url,
         '--highlight=zenburn'
