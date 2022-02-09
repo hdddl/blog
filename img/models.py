@@ -31,4 +31,4 @@ class Image(models.Model):
 
     class Meta:
         verbose_name_plural = "图片"
-        ordering = ['name']
+        ordering = ['pubdate']

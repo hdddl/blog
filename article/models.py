@@ -9,6 +9,7 @@ class TimeStampMixin(models.Model):
     class Meta:
         abstract = True
 
+
 # 博客tags
 class Tags(models.Model):
     name = models.CharField(max_length=50)

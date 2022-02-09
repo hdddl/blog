@@ -1,2 +1,5 @@
 env.py
-media\
+media/
+test/
+img/migrations/
+article/migrations/
