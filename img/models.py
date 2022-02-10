@@ -6,7 +6,7 @@ from django.db import models
 # 相册
 class Album(models.Model):
     # 相册名称
-    name = models.CharField(default='未分类', max_length=30)
+    name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
