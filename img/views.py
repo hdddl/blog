@@ -17,6 +17,7 @@ def upload(request):
             "path": ""
         }
         form = UploadImage(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
             response_data['status'] = True
             response_data['msg'] = "Image upload successfully"
