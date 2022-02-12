@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import  JsonResponse
 from .forms import UploadImage
@@ -7,6 +8,7 @@ from .forms import UploadImage
 
 
 # 图片上传接口
+@login_required(login_url='/admin')
 def upload(request):
     if request.method == 'GET':
         return render(request, 'upload.html')
@@ -17,7 +19,6 @@ def upload(request):
             "path": ""
         }
         form = UploadImage(request.POST, request.FILES)
-        print(form)
         if form.is_valid():
             response_data['status'] = True
             response_data['msg'] = "Image upload successfully"
