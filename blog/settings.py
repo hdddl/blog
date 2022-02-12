@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from .env import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+from .env import DEBUG
 
 ALLOWED_HOSTS = ['*']
 
