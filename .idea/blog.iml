@@ -14,7 +14,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 3.8 (first)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (dev)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="@mdi/font" level="application" />
     <orderEntry type="library" name="vuetify" level="application" />

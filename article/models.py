@@ -47,8 +47,6 @@ class Blog(TimeStampMixin):
     markdown_text = models.TextField(default=' ')
     # html文章正文
     html_text = models.TextField(null=True, blank=True)
-    # 是否需要更新
-    updated = models.BooleanField(default=False)
     # 文章分类
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     # 文章标签(多对多关系)
@@ -63,8 +61,6 @@ class Blog(TimeStampMixin):
 
 
 class Micro_blog(TimeStampMixin):
-    # 是否需要更新
-    updated = models.BooleanField(default=False)
     # markdown文章正文
     markdown_text = models.TextField()
     # html文章正文
@@ -81,8 +77,6 @@ class Micro_blog(TimeStampMixin):
 # 一些特殊页面
 class Pages(TimeStampMixin):
     name = models.CharField(max_length=20, unique=True)
-    # 是否需要更新
-    updated = models.BooleanField(default=False)
     # markdown文章正文
     markdown_text = models.TextField(null=True, blank=True)
     # html文章正文

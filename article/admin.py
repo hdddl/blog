@@ -1,13 +1,23 @@
+# coding=utf-8
 from django.contrib import admin
 
 from .models import Blog, Micro_blog, Categories, Tags, Pages
+from .convert import markdown2html
 
 
 # Register your models here.
 class auto_update(admin.ModelAdmin):
-    # ÷ÿ–¥save_model
+    # ÈáçÂÜôsave_model
     def save_model(self, request, obj, form, change):
-        obj.updated = False
+        if obj.__class__ == Pages and obj.text_type == "html":
+            super().save_model(request, obj, form, change)
+            return
+
+        if obj.__class__ == Micro_blog:
+            html = markdown2html(obj.markdown_text, template=False, standalone=False)
+        else:
+            html = markdown2html(obj.markdown_text, template=True, standalone=True)
+        obj.html_text = html
         obj.save()
         super().save_model(request, obj, form, change)
 
