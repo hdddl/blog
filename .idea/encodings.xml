@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/article/models.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/article/templates/index.html" charset="GBK" />
     <file url="file://$PROJECT_DIR$/article/views.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/blog/settings.py" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/img/views.py" charset="GBK" />
     <file url="file://$PROJECT_DIR$/static/index.js" charset="UTF-8" />
   </component>
 </project>
