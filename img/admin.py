@@ -18,7 +18,7 @@ class ImageAdmin(admin.ModelAdmin):
         展示图片预览
         """
         url = HOST + "/media" +  instance.image.url
-        return mark_safe('<img src="%s">'%url)
+        return mark_safe('<img src="%s" style="width: 30%; height: 17%">'%url)
 
 
 admin.site.register(Image, ImageAdmin)
