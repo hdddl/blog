@@ -9,7 +9,7 @@ from blog.env import HOST
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = ("name", "album", "pubdate")
-    list_filter = ("album")
+    list_filter = ("album", )
     readonly_fields = ("image_preview",)
 
     @admin.display(description="preview")
