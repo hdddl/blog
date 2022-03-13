@@ -9,7 +9,7 @@ from blog.env import HOST
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = ("name", "album", "pubdate")
-    list_filter = ("album", )
+    list_filter = ("album",)
     readonly_fields = ("image_preview",)
 
     @admin.display(description="preview")
@@ -17,8 +17,8 @@ class ImageAdmin(admin.ModelAdmin):
         """
         展示图片预览
         """
-        url = HOST + "/media" +  instance.image.url
-        return mark_safe('<img src="%s" style="width: 30%; height: 17%">'%url)
+        url = HOST + "/media" + instance.image.url
+        return mark_safe('<img src="' + url + '" style="width: 30%; height: 17%">')
 
 
 admin.site.register(Image, ImageAdmin)
