@@ -15,6 +15,8 @@ class LatestBlogsFeed(Feed):
     title = "东流的博客"
     link = "/"
     description = "青山遮不住，毕竟东流去。"
+    def items(self):
+        return Blog.objects.order_by("-pubdate")[0:5]
 
     def item_title(self, item):
         return item.title
