@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import rss
 
 urlpatterns = [
     path("", views.index_page, name="index"),
@@ -11,5 +12,7 @@ urlpatterns = [
     path("api/content", views.api_content, name="content"),
     path("api/categories", views.api_categories, name="categories"),
     path("api/tags", views.api_tags, name="tags"),
-    path("api/pages", views.api_pages, name="pages")
+    path("api/pages", views.api_pages, name="pages"),
+    path("rss/blog", rss.LatestBlogsFeed(), name="rss_blog"),
+    path("rss/microBlog", rss.LatestMicroBlogFeed(), name="rss_microBlog")
 ]
