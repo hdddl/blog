@@ -14,20 +14,6 @@
         <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
      $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <style type="text/tailwindcss">
-        h1 {
-            @apply text-2xl font-medium;
-        }
-        h2 {
-            @apply text-xl font-medium;
-        }
-        h3 {
-            @apply text-lg font-medium;
-        }
-        .sourceCode{
-          @apply bg-slate-50 rounded-lg;
-        }
-    </style>
     <style type="text/css">
         code{white-space: pre-wrap;}
         span.smallcaps{font-variant: small-caps;}
@@ -51,71 +37,72 @@
     $for(header-includes)$
         $header-includes$
     $endfor$
-    <script src="static/js/tailwindcss.js"></script>
-    <script src="static/js/flowbite.js"></script>
-
+    <script src="/static/js/flowbite.js"></script>
+    <link href="/static/css/blog.css" rel="stylesheet">
   </head>
-  <body>
-    <!--导航栏-->
-   <nav class="bg-neutral-100 border-gray-200 shadow px-2 sm:px-4 py-4 rounded dark:bg-gray-800">
-      <div class="container flex flex-wrap justify-between items-center mx-auto">
-        <a href="/" class="flex">
-            <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Dongliu</span>
-        </a>
-        <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-          <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-        <div class="hidden w-full md:block md:w-auto" id="mobile-menu">
-          <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
-            <li>
-              <a href="/" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">博客</a>
-            </li>
-            <li>
-              <a href="/micro_blog" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">微博</a>
-            </li>
-            <li>
-              <a href="/about" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">关于</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="mt-16 relative w-full px-10 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
-        $for(include-before)$
-            $include-before$
-        $endfor$
-        $if(title)$
-        <header id="title-block-header">
-        <h1 class="title text-3xl font-medium">$title$</h1>
-        $if(subtitle)$
-        <p class="subtitle">$subtitle$</p>
-        $endif$
-        $for(author)$
-        <p class="author">$author$</p>
-        $endfor$
-        $if(date)$
-        <p class="date font-light">$date$</p>
-        $endif$
-        </header>
-        $endif$
-        $if(toc)$
-        <nav id="$idprefix$TOC">
-        $table-of-contents$
-        </nav>
-        $endif$
-        <div class="mt-10">
-            $body$
-            $for(include-after)$
-            $include-after$
-            $endfor$
-        </div>
-
-    </div>
-    <!--底部声名
-    <footer class="relative bottom-0 w-full text-center mt-10">
-        © Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
-    </footer>-->
-  </body>
+<body>
+$if(nav)$
+<!--导航栏-->
+<nav class="bg-neutral-100 border-gray-200 shadow px-2 sm:px-4 py-4 rounded dark:bg-gray-800">
+<div class="container flex flex-wrap justify-between items-center mx-auto">
+<a href="/" class="flex">
+<span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Dongliu</span>
+</a>
+<button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+<span class="sr-only">Open main menu</span>
+<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+<svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+</button>
+<div class="hidden w-full md:block md:w-auto" id="mobile-menu">
+<ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+<li>
+<a href="/" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">博客</a>
+</li>
+<li>
+<a href="/micro_blog" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">微博</a>
+</li>
+<li>
+<a href="/about" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">关于</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+$endif$
+<div class="mt-16 relative w-full px-10 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
+$for(include-before)$
+$include-before$
+$endfor$
+$if(title)$
+<header id="title-block-header">
+<h1 class="title text-3xl font-medium">$title$</h1>
+$if(subtitle)$
+<p class="subtitle">$subtitle$</p>
+$endif$
+$for(author)$
+<p class="author">$author$</p>
+$endfor$
+$if(date)$
+<p class="date font-light">$date$</p>
+$endif$
+</header>
+$endif$
+$if(toc)$
+<nav id="$idprefix$TOC">
+$table-of-contents$
+</nav>
+$endif$
+<article class="prose prose-slate max-w-none lg:prose-lg mt-10 prose-img:mx-auto prose-figcaption:text-center">
+$body$
+$for(include-after)$
+$include-after$
+$endfor$
+</article>
+</div>
+<!--底部声名
+<footer class="relative bottom-0 w-full text-center mt-10">
+© Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
+</footer>-->
+</body>
 </html>
+

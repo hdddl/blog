@@ -6,8 +6,6 @@
       <title>Dongliu's micro blog</title>
         {% load static %}
       <link href="{% static 'css/micro_blog.css' %}" rel="stylesheet">
-      <script src="{% static 'js/axios.min.js' %}"></script>
-      <script src="{% static 'js/vue@2.js' %}"></script>
       <script src="{% static 'js/flowbite.js' %}"></script>
     </head>
   <body>
@@ -38,36 +36,28 @@
       </div>
     </nav>
     <div class="mt-6" id="app">
-        <div class="mt-6" v-for="item in items" :key="item.date">
+        {% for microBlog in microBlogs %}
+        <div class="mt-6">
             <div class="mt-16 relative w-full px-10 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
                     <article class="prose prose-slate max-w-none lg:prose-lg ">
-                        <span v-html="item.text"></span>
+                        {{ microBlog.text|safe }}
                       </article>
-                    <p class="absolute bottom-10 left-10 text-gray-600 text-xs">[[ item.date ]]</p>
+                    <p class="absolute bottom-10 left-10 text-gray-600 text-xs">{{ microBlog.date }}</p>
             </div>
         </div>
+        {% endfor %}
+
         <div class="mt-10 relative flex justify-center">
           <nav aria-label="Page navigation example">
             <ul class="flex list-style-none">
-              <li class="page-item"><button
-                  class="disable page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  v-on:click="change_page(-1)"
-              >Previous</button></li>
-              <li class="page-item"><button
-                  class="page-link relative block py-1.5 px-3 border-0 bg-blue-600 outline-none transition-all duration-300 rounded-full text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md"
-                  >[[ current_page ]]</button></li>
-              <li class="page-item active"><button
-                  class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  v-on:click="change_page(1)"
-              >[[ current_page+1 ]]</button></li>
-              <li class="page-item"><button
-                  class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  v-on:click="change_page(2)"
-              >[[ current_page+2 ]]</button></li>
-              <li class="page-item"><button
-                  class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                  v-on:click="change_page(1)"
-              >Next</button></li>
+              <li class="page-item"><a
+                      href="?page={{ page.previous }}"
+                      class="disable page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+              >Previous</a></li>
+              <li class="page-item"><a
+                      href="?page={{ page.next }}"
+                      class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+              >Next</a></li>
             </ul>
           </nav>
         </div>
@@ -76,33 +66,5 @@
     <footer class="absolute bottom-0 w-full text-center mt-10">
         © Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
     </footer>-->
-    <script>
-        vm = new Vue({
-            el: '#app',
-            delimiters: ['[[', ']]'],
-            data :{
-                items: [],
-                current_page: 1,
-            },
-            methods:{
-                Get_items: function(){
-                    const _this = this;
-                    axios.get("/api/content?type=micro_blog&page=" + this.current_page).then(function (res) {
-                        _this.items = res.data.data;
-                    });
-                },
-                change_page: function(deviation){
-                    if(this.current_page <= 1 && deviation === -1){
-                    }else{
-                        this.current_page += deviation
-                        this.Get_items()
-                    }
-                }
-            },
-            mounted(){
-                this.Get_items()
-            }
-        })
-    </script>
   </body>
 </html>

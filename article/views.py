@@ -1,11 +1,86 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from article.models import Blog, Micro_blog, Tags, Categories, Pages
 
 
 # 网站首页
 def index_page(request):
-    return render(request, "index.html")
+    # get categories data
+    categories = []
+    for i in Categories.objects.values("name"):
+        metadata = {
+            "url": "?category=" + i['name'],
+            "name": i['name']
+        }
+        categories.append(metadata)
+    # get tags data
+    tags = []
+    for i in Tags.objects.values("name"):
+        metadata = {
+            "url": "?tag=" + i['name'],
+            "name": i['name']
+        }
+        tags.append(metadata)
+    # get blog
+    blogs = []
+    blog_object = Blog.objects
+    get_category = request.GET.get("category")
+    get_tag = request.GET.get("tag")
+    get_page = request.GET.get('page')
+    if not get_page or not get_page.isdigit():
+        get_page = 1
+    get_page = int(get_page)
+    if get_category:  # filter category
+        blog_object = blog_object.filter(category__name=get_category)
+    if get_tag:  # filter tag
+        blog_object = blog_object.filter(tags__name=get_tag)
+    blog_object = blog_object.values_list("title", "pubdate", "abstract").order_by("-pubdate")[
+                  (get_page - 1) * 10: 10 * get_page]
+    for i in blog_object:
+        title, date, abstract = i
+        metadata = {
+            "title": title,
+            "date": date,
+            "abstract": abstract,
+            "url": "/blog?title=" + title
+        }
+        blogs.append(metadata)
+    context = {
+        "tags": tags,
+        "categories": categories,
+        "blogs": blogs,
+        "page": {
+            "previous": 1 if get_page <= 1 else get_page - 1,
+            "next": get_page + 1
+        }
+    }
+    return render(request, "index.html", context=context)
+
+
+# 微博页
+def micro_blog_page(request):
+    micro_blogs = []
+    get_page = request.GET.get('page')
+    if not get_page or not get_page.isdigit():
+        get_page = 1
+    get_page = int(get_page)
+    micro_blog_object = Micro_blog.objects.values_list("html_text", "pubdate").order_by("-pubdate")[(get_page-1)*10: 10*get_page]
+    for i in micro_blog_object:
+        text, pubdate = i
+        metadata = {
+            "text": text,
+            "date": pubdate
+        }
+        micro_blogs.append(metadata)
+    context = {
+        "microBlogs": micro_blogs,
+        "page": {
+            "previous": 1 if get_page <= 1 else get_page - 1,
+            "next": get_page + 1
+        }
+    }
+
+    return render(request, "weibo.html", context=context)
 
 
 # 404页面
@@ -21,11 +96,6 @@ def category_page(request):
 # 标签页
 def tags_page(request):
     return render(request, "index.html")
-
-
-# 微博页
-def micro_blog_page(request):
-    return render(request, "weibo.html")
 
 
 # 关于页面
@@ -54,96 +124,12 @@ def blog_article_page(request):
         return HttpResponse("404 Not found")
 
 
-# 获取文章目录，默认一页为10条。
-def api_content(request):
-    # 获取文章类型，博客或者是微博
-    content_type = request.GET.get("type")
-    # 获取页面，默认一页10条
-    page = request.GET.get("page")
-    # 构建响应JSON
-    response_data = {
-        "status": False,
-        "msg": "",
-        "data": []
-    }
-    # 验证类型参数是否正确
-    if content_type != "blog" and content_type != "micro_blog":
-        response_data['msg'] = "parameter type worry"
-        return JsonResponse(response_data)
-    # 验证page页面参数是否错误
-    if page.isdigit() and int(page) > 0:
-        page = int(page)
-    else:
-        response_data['msg'] = "parameter page worry"
-        return JsonResponse(response_data)
-    # 修改响应状态
-    response_data['status'] = True
-    if content_type == "blog":
-        items = Blog.objects
-        # 特定的分类
-        category = request.GET.get("category")
-        # 特定的标签
-        tags = request.GET.get("tag")
-        # 分类
-        if category:
-            items = items.filter(category__name=category)
-        if tags:
-            items = items.filter(tags__name=tags)
-        # 现在数量
-        items = items.values_list("title", "pubdate", "abstract").order_by('-pubdate')[(page - 1) * 10: 10 * page]
-        for i in items:
-            title, date, text = i
-            response_data['data'].append(
-                {"title": title, "date": date, "text": text}
-            )
-        return JsonResponse(response_data)
-    else:
-        items = Micro_blog.objects.values_list(
-            "pubdate", "html_text"
-        ).order_by('-pubdate')[(page - 1) * 10: 10 * page]
-        for item in items:
-            pubdate, html_text = item
-            response_data['data'].append({'date': pubdate, 'text': html_text})
-        return JsonResponse(response_data)
-
-
 # 返回特殊自创页面
 def api_pages(request):
     name = request.GET.get("name")
     item = Pages.objects.values_list("html_text").filter(name=name)
     if item.exists():
-        text_type, html_text = item[0]
+        html_text = item[0]
         return HttpResponse(html_text)
     else:
         return HttpResponse("Not found")
-
-
-# 获取categories
-def api_categories(request):
-    # 构建响应JSON
-    response_data = {
-        "status": True,
-        "msg": "",
-        "data": [],
-    }
-    categories = Categories.objects.values("name")
-    for i in categories:
-        i = i['name']
-        if i not in response_data['data']:
-            response_data['data'].append(i)
-    return JsonResponse(response_data)
-
-
-# 获取tags
-def api_tags(request):
-    # 构建响应JSON
-    response_data = {
-        "status": True,
-        "msg": "",
-        "data": [],
-    }
-    tags = Tags.objects.values("name")
-    for i in tags:
-        i = i['name']
-        response_data['data'].append(i)
-    return JsonResponse(response_data)
