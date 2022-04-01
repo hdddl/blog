@@ -10,8 +10,9 @@ def markdown2html(markdown_text, template=False, standalone=False):
         'pandoc',
         '-f', 'markdown+implicit_figures',
         '-t', 'html',
-        '--mathjax=' + mathjax_url,
-        '--highlight=zenburn'
+        "-F mermaid-filter"         # 添加对mermaid的支持
+        '--mathjax=' + mathjax_url, # 添加对数学公式的支持
+        '--highlight=zenburn'       # 一种代码高亮方式
     ]
     if template:
         cmd.append('--template')

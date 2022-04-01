@@ -919,10 +919,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   position: relative;
 }
 
-.bottom-10 {
-  bottom: 2.5rem;
-}
-
 .left-10 {
   left: 2.5rem;
 }
@@ -965,10 +961,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .max-w-none {
   max-width: none;
-}
-
-.grow {
-  flex-grow: 1;
 }
 
 .justify-center {

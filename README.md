@@ -2,33 +2,10 @@
 
 
 
+## 1. 开始使用
 
 
-## API design
 
-|                 URL                  | Method |          description           |
-| :----------------------------------: | :----: | :----------------------------: |
-| api/content?type=<string>&page=<int> |  GET   | 获取文章目录，默认一页为10条。 |
-|      api/article?title=<string>      |  GET   |          获取文章正文          |
-|               api/tags               |  GET   |          获取标签列表          |
-|            api/categories            |  GET   |          获取分类列表          |
+Pandoc
 
-### Struct
-
-1. api/content?type=<string>&page=<int>
-
-   ```json
-   {
-       status: {true, false},
-       msg: "string",
-       data: [
-           {
-               title: "string",
-               date: "string",
-               text: "string",
-           }
-       ]
-   }
-   ```
-
-2. 
+[pandoc-mermaid-filter](https://github.com/raghur/mermaid-filter)
