@@ -40,9 +40,14 @@
     <link href="/static/css/blog.css" rel="stylesheet">
   </head>
 <body>
-$if(nav)$
-<!--导航栏-->
-<nav class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6">
+
+<!--导航栏-->    
+<nav 
+class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6"
+$if(individual)$
+style="display:none"
+$endif$
+>
 <div class="lg:inline-block">
 <a href="/" class="text-lg">Dongliu</a>
 </div>
@@ -58,7 +63,8 @@ $if(nav)$
 </a>
 </div>
 </nav>
-$endif$
+
+
 <div class="mt-16 relative w-full px-10 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
 $for(include-before)$
 $include-before$

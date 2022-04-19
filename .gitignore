@@ -1,3 +1,4 @@
 env.py
+*.pyc
 media/
 test/
