@@ -1,8 +1,11 @@
 # coding=utf-8
+from click import make_pass_decorator
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import Blog, Micro_blog, Categories, Tags, Pages
 from .convert import markdown2html
+from blog.env import HOST
 
 
 # Register your models here.
@@ -28,9 +31,14 @@ class BlogAdmin(auto_update):
 
 
 class PagesAdmin(auto_update):
-    list_display = ('name', 'text_type', 'pubdate')
+    list_display = ('name', 'text_type', 'pubdate', "page_url")
     list_filter = ('name', 'text_type', 'pubdate')
     exclude = ('updated',)
+    # 返回页面所对应的URL
+    def page_url(self, obj):
+        url = HOST + "/api/pages?name=" + obj.name
+        return mark_safe('<a href="%s" target=”_blank”>redirect</a>' % url)
+        
 
 
 class MicroBlogAdmin(auto_update):
