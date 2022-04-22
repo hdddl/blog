@@ -7,7 +7,7 @@ from .forms import UploadImage
 # Create your views here.
 
 
-# 图片上传接口
+# 鍥剧墖涓婁紶鎺ュ彛
 @login_required(login_url='/admin')
 def upload(request):
     if request.method == 'GET':

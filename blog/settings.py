@@ -112,7 +112,7 @@ from os import path
 STATIC_URL = '/static/'
 STATIC_ROOT = path.join(BASE_DIR, 'static')
 
-# 媒体文件目录
+# 濯掍綋鏂囦欢鐩綍
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -15,7 +15,6 @@ class auto_update(admin.ModelAdmin):
         if obj.__class__ == Pages and obj.text_type == "html":
             super().save_model(request, obj, form, change)
             return
-
         if obj.__class__ == Micro_blog:
             html = markdown2html(obj.markdown_text, template=False, standalone=False)
         else:
