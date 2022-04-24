@@ -1,26 +1,64 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Dongliu图床</title>
+    {% load static %}
+    <link href="{% static 'upload.css' %}" rel="stylesheet">
 </head>
 <body>
-    <div>
-        <form action="/img/upload" method="post" enctype="multipart/form-data">{% csrf_token %}
-            <label for="name">图片名称</label>
-            <input type="text" id="name" name="name">
-            <br>
-            <label for="album">图片分类</label>
-            <select id="album" name="album">
-                <option value="1">未分类</option>
-                <option value="2">test</option>
-            </select>
-            <br>
-            <label for="image">图片</label>
-            <input type="file" id="image" name="image">
-            <br>
-            <input type="submit">
-        </form>
-    </div>
+    <nav class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6">
+        <div class="lg:inline-block">
+            <a href="/" class="text-lg">Dongliu</a>
+        </div>
+        <div class="lg:justify-end">
+            <a href="/" class=" mt-4 lg:inline-block lg:mt-0 text-black mr-4">
+                博客
+            </a>
+            <a href="/micro_blog" class=" mt-4 lg:inline-block lg:mt-0 text-black mr-4">
+                微博
+            </a>
+            <a href="/about" class=" mt-4 lg:inline-block lg:mt-0 text-black">
+                关于
+            </a>
+        </div>
+    </nav>
+    <form action="/img/upload" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="flex justify-center mt-10">
+          <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
+              <div class="m-4">
+                  <label class="inline-block mb-2 text-gray-500">Image uploader</label>
+                  <div class="flex items-center justify-center w-full">
+                      <label class="flex flex-col w-full h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                          <div class="flex flex-col items-center justify-center pt-7">
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                  class="w-12 h-12 text-gray-400 group-hover:text-gray-600" viewBox="0 0 20 20"
+                                  fill="currentColor">
+                                  <path fill-rule="evenodd"
+                                      d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                                      clip-rule="evenodd" />
+                              </svg>
+                              <p class="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                                  Select a photo</p>
+                          </div>
+                          <input type="file" id="image" name="image" class="opacity-0" />
+                      </label>
+                  </div>
+              </div>
+              <div class="flex p-2 space-x-4">
+                  <label for="name" class="px-4 py-2 text-white bg-green-500 rounded shadow-xl">Image name: </label>
+                  <input type="text" id="name" name="name" class="shadow appearance-none border rounded  px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <label for="album" class="px-4 py-2 text-white bg-green-500 rounded shadow-xl">图片分类</label>
+                  <select id="album" name="album" class="block appearance-none  bg-white border border-gray-200 text-gray-700  px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                      <option value="1">未分类</option>
+                      <option value="2">test</option>
+                  </select>
+                  <button class="px-4 py-2 text-white bg-blue-500 rounded shadow-xl">Upload</button>
+              </div>
+          </div>
+      </div>
+    </form>
+
 </body>
 </html>

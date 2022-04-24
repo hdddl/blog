@@ -1,5 +1,4 @@
 # coding=utf-8
-from click import make_pass_decorator
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 

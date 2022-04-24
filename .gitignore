@@ -1,4 +1,5 @@
 env.py
+__pycache__/
 *.pyc
 mermaid-filter.err
 media/
