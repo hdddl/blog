@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.http import  JsonResponse
-from .forms import UploadImage
+from django.http import JsonResponse
+from img.models import Album
+from img.forms import UploadImage
+from blog.env import HOST
 
 
 # Create your views here.
@@ -11,7 +13,17 @@ from .forms import UploadImage
 @login_required(login_url='/admin')
 def upload(request):
     if request.method == 'GET':
-        return render(request, 'upload.html')
+        album_object = Album.objects.values("name")
+        context = {
+            "album": {
+
+            }
+        }
+        cnt = 1
+        for i in album_object:
+            context["album"][str(cnt)] = i['name']
+            cnt = cnt+1
+        return render(request, 'upload.html', context=context)
     else:
         response_data = {
             "status": False,
@@ -23,5 +35,5 @@ def upload(request):
             response_data['status'] = True
             response_data['msg'] = "Image upload successfully"
             entry = form.save()
-            response_data['path'] = entry.image.url
+            response_data['path'] = HOST + "/media" + entry.image.url
         return JsonResponse(response_data)
