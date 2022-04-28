@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dongliu图床</title>
+  {% load static %}
+  <link href="{% static 'css/uploadSuccess.css' %}" rel="stylesheet">
+</head>
+<body>
+  <nav class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6">
+      <div class="lg:inline-block">
+          <a href="/" class="text-lg">Dongliu</a>
+      </div>
+      <div class="lg:justify-end">
+          <a href="/" class=" mt-4 lg:inline-block lg:mt-0 text-black mr-4">
+              博客
+          </a>
+          <a href="/micro_blog" class=" mt-4 lg:inline-block lg:mt-0 text-black mr-4">
+              微博
+          </a>
+          <a href="/about" class=" mt-4 lg:inline-block lg:mt-0 text-black">
+              关于
+          </a>
+      </div>
+  </nav>
+  <div class="mt-16 w-2/3 m-auto">
+      <div class="flex items-center mb-6">
+        <div class="md:w-3/4 items-center">
+          <label for="direct_Link"  class="w-1/4 inline text-gray-500 font-bold mb-1 md:mb-0 pr-4">直链：</label>
+          <input id="direct_Link" class="w-3/4" value="{{ direct_Link }}">
+        </div>
+        <div class="md:w-1/4">
+          <button class="copyButton bg-blue-300 border-2 border-gray-200 shadow-lg rounded-lg w-full py-2 px-4 text-gray-700">复制</button>
+        </div>
+      </div>    
+  </div>
+  <div class="mt-16 w-2/3 m-auto">
+      <div class="flex items-center mb-6">
+        <div class="md:w-3/4 items-center">
+          <label for="Markdown_Link" class="w-1/4 inline text-gray-500 font-bold mb-1 md:mb-0 pr-4">Markdown链接：</label>
+          <input id="Markdown_Link" class="w-3/4" value="{{ Markdown_Link }}">
+        </div>
+        <div class="md:w-1/4">
+          <button class="copyButton bg-blue-300 border-2 border-gray-200 shadow-lg rounded-lg w-full py-2 px-4 text-gray-700">复制</button>
+        </div>
+      </div>                
+  </div>
+  <div class="mt-16 w-2/3 m-auto">
+      <div class="flex items-center mb-6">
+        <div class="md:w-3/4 items-center">
+          <label for="HTML_Link" class="w-1/4 inline text-gray-500 font-bold mb-1 md:mb-0 pr-4">HTML链接：</label>
+          <input id="HTML_Link" class="w-3/4" value="{{ HTML_Link }}">
+        </div>
+        <div class="md:w-1/4">
+          <button class="copyButton bg-blue-300 border-2 border-gray-200 shadow-lg rounded-lg w-full py-2 px-4 text-gray-700">复制</button>
+        </div>
+      </div>                 
+  </div>  
+  <script>
+      function copyToclipboard(idValue){
+        var input = document.getElementById(idValue)
+        input.select()
+        if(document.execCommand("copy")){
+          console.log("copy to cliphoard success")
+        }
+      }
+
+      var btn = document.getElementsByClassName("copyButton")
+      var idList = ["direct_Link", "Markdown_Link", "HTML_Link"]
+      for(let i of Array(3).keys()){
+        btn[i].onclick = function(){
+          copyToclipboard(idList[i])
+        }        
+      }
+  </script>
+
+</body>
+</html>

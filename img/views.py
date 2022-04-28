@@ -15,9 +15,7 @@ def upload(request):
     if request.method == 'GET':
         album_object = Album.objects.values("name")
         context = {
-            "album": {
-
-            }
+            "album": {}
         }
         cnt = 1
         for i in album_object:
@@ -25,15 +23,18 @@ def upload(request):
             cnt = cnt+1
         return render(request, 'upload.html', context=context)
     else:
-        response_data = {
-            "status": False,
-            "msg": "Image format error!",
-            "path": ""
+        context = {
+            "direct_Link" :"",
+            "Markdown_Link": "",
+            "HTML_Link": "",
         }
         form = UploadImage(request.POST, request.FILES)
         if form.is_valid():
-            response_data['status'] = True
-            response_data['msg'] = "Image upload successfully"
             entry = form.save()
-            response_data['path'] = HOST + "/media" + entry.image.url
-        return JsonResponse(response_data)
+            imageUrl = HOST + "/media" + entry.image.url     # 获取直链
+            imageName = entry.image.name.split("/")[-1]     # 获取图片名称
+            imageName = imageName.split(".")[0]
+            context["direct_Link"] = imageUrl
+            context["Markdown_Link"] = "![%s](%s)" % (imageName, imageUrl)
+            context["HTML_Link"] = "<img src=\"%s\" alt=\"%s\">" % (imageUrl, imageName)
+        return render(request=request, template_name="uploadSuccess.html", context=context)
