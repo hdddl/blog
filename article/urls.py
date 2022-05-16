@@ -10,6 +10,6 @@ urlpatterns = [
     path("tags", views.tags_page, name='tag'),
     path("categories", views.category_page, name="category"),
     path("api/pages", views.api_pages, name="pages"),
-    path("rss/blog", rss.LatestBlogsFeed(), name="rss_blog"),
-    path("rss/microBlog", rss.LatestMicroBlogFeed(), name="rss_microBlog")
+    path("feed/blog", rss.LatestBlogsFeed(), name="rss_blog"),
+    path("feed/microBlog", rss.LatestMicroBlogFeed(), name="rss_microBlog")
 ]

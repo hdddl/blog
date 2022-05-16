@@ -12,7 +12,7 @@ class LatestBlogsFeed(Feed):
     """
     最近的五条博客
     """
-    title = "东流的博客"
+    title = "东流的Blog"
     link = "/"
     description = "青山遮不住，毕竟东流去。"
     def items(self):
@@ -22,7 +22,7 @@ class LatestBlogsFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        return item.abstract
+        return item.html_text
 
     def item_link(self, item):
         return "/blog?title=" + item.title
