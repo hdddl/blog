@@ -29,7 +29,7 @@
           <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
               <div class="m-4">
                   <label class="inline-block mb-2 text-gray-500">Image uploader</label>
-                  <div class="flex items-center justify-center w-full">
+                  <div id="dropUpload" class="flex items-center justify-center w-full">
                       <label class="flex flex-col w-full h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
                           <div class="flex flex-col items-center justify-center pt-7">
                               <svg xmlns="http://www.w3.org/2000/svg"
@@ -61,15 +61,27 @@
       </div>
     </form>
     <script>
-    document.getElementById("image").onchange = function(){
-        var imageName = document.getElementById("image").files.item(0).name
-        var prompt = document.getElementById("prompt")
-        var name = document.getElementById("name")
-        prompt.textContent = imageName   // 修改提示语
-        name.value = imageName
-
-    }
-    </script>
+        var changeName = function(){
+            var imageName = document.getElementById("image").files.item(0).name
+            var prompt = document.getElementById("prompt")
+            var name = document.getElementById("name")
+            prompt.textContent = imageName   // 修改提示语
+            name.value = imageName
+          }
+          document.getElementById("image").onchange = function(){
+              changeName()
+          }
+          var dropZone = document.getElementById("dropUpload")
+          dropZone.addEventListener("dragover", function(e){
+            e.preventDefault()
+          }, false);
+          dropZone.addEventListener("drop", function(e){
+              e.preventDefault()
+              var imageInput = document.getElementById("image")
+              imageInput.files = e.dataTransfer.files
+              changeName()
+          });
+      </script>
 
 </body>
 </html>
