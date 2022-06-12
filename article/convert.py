@@ -12,7 +12,7 @@ def markdown2html(markdown_text, template=False, standalone=False):
         '-t', 'html',
         "-F", "/usr/bin/mermaid-filter",  # 添加对mermaid的支持
         '--mathjax=' + mathjax_url,  # 添加对数学公式的支持
-        '--highlight=zenburn'  # 一种代码高亮方式
+        '--highlight=haddock'  # 一种代码高亮方式
     ]
     if template:
         cmd.append('--template')
