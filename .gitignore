@@ -2,6 +2,7 @@ env.py
 __pycache__/
 *.pyc
 .idea/
+.static/
 mermaid-filter.err
 media/
 test/
