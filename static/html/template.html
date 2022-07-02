@@ -37,7 +37,7 @@
     $for(header-includes)$
         $header-includes$
     $endfor$
-    <link href="/static/css/blog.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   </head>
 <body>
 <!--导航栏-->    
@@ -85,7 +85,7 @@ $if(toc)$
 $table-of-contents$
 </nav>
 $endif$
-<article class="prose prose-slate max-w-none prose-pre:text-black prose-pre:bg-slate-100 lg:prose-lg mt-10 prose-img:mx-auto prose-figcaption:text-center">
+<article class="prose prose-slate max-w-none prose-pre:text-black prose-pre:bg-slate-100 lg:prose-lg mt-10 prose-img:mx-auto prose-img:rounded-xl prose-img:shadow-lg prose-figcaption:text-center">
 $body$
 $for(include-after)$
 $include-after$
