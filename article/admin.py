@@ -40,7 +40,7 @@ class PagesAdmin(auto_update):
 
 
 class MicroBlogAdmin(auto_update):
-    list_display = ('description', 'pubdate',)
+    list_display = ('description', 'pubdate', 'private')
     list_filter = ('pubdate',)
     exclude = ('html_text', 'updated')
 
