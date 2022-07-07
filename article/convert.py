@@ -11,7 +11,7 @@ def markdown2html(markdown_text, template=False, standalone=False):
         '-f', 'markdown+implicit_figures',
         '-t', 'html',
         '--mathjax=' + mathjax_url,  # 添加对数学公式的支持
-        '--highlight=haddock'  # 一种代码高亮方式
+        '--highlight=pygments'  # 一种代码高亮方式
     ]
     if not DEBUG:
         cmd.append("-F")
