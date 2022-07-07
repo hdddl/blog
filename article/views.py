@@ -30,6 +30,8 @@ def index_page(request):
     if not get_page or not get_page.isdigit():
         get_page = 1
     get_page = int(get_page)
+    if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
+        blog_object = blog_object.filter(private=False)
     if get_category:  # filter category
         blog_object = blog_object.filter(category__name=get_category)
     if get_tag:  # filter tag
@@ -64,7 +66,11 @@ def micro_blog_page(request):
     if not get_page or not get_page.isdigit():
         get_page = 1
     get_page = int(get_page)
-    micro_blog_object = Micro_blog.objects.values_list("html_text", "pubdate").order_by("-pubdate")[(get_page-1)*10: 10*get_page]
+    micro_blog_object = Micro_blog.objects
+    if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
+        micro_blog_object = micro_blog_object.filter(private=False)
+    micro_blog_object = micro_blog_object.values_list("html_text", "pubdate").order_by("-pubdate")[
+                        (get_page - 1) * 10: 10 * get_page]
     for i in micro_blog_object:
         text, pubdate = i
         metadata = {
@@ -111,7 +117,10 @@ def about_page(request):
 # 博客文章页
 def blog_article_page(request):
     title = request.GET.get("title")
-    content = Blog.objects.values_list("html_text").filter(
+    blog_object = Blog.objects
+    if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
+        blog_object = blog_object.filter(private=False)
+    content = blog_object.values_list("html_text").filter(
         title=title)
     if content:
         html_text = content[0]
@@ -127,7 +136,7 @@ def blog_article_page(request):
 # 返回特殊自创页面
 def api_pages(request):
     name = request.GET.get("name")
-    item = Pages.objects.values_list("html_text").filter(name=name)
+    item = Pages.objects.values_list("html_text").filter(title=name)
     if item.exists():
         html_text = item[0]
         return HttpResponse(html_text)

@@ -1,15 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-class TimeStampMixin(models.Model):
-    pubdate = models.DateTimeField(auto_now_add=True)
-    modify_date = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
 # 博客tags
 class Tags(models.Model):
     name = models.CharField(max_length=50)
@@ -34,23 +25,18 @@ class Categories(models.Model):
         return self.name
 
 
-class Blog(TimeStampMixin):
-    # 文章标题
-    title = models.CharField(max_length=50, unique=True)
-    # 文章作者
-    author = models.CharField(max_length=50, default='Dongliu')
-    # 访问次数
-    visits = models.BigIntegerField(default=0)
-    # 文章摘要
-    abstract = models.TextField(null=True)
-    # markdown文章正文
-    markdown_text = models.TextField(default=' ')
-    # html文章正文
-    html_text = models.TextField(null=True, blank=True)
-    # 文章分类
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    # 文章标签(多对多关系)
-    tags = models.ManyToManyField(Tags)
+class Blog(models.Model):
+    private = models.BooleanField()     # 是否为仅仅自己可见
+    pubdate = models.DateTimeField(auto_now_add=True)  # 文章发布时间
+    modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
+    title = models.CharField(max_length=50, unique=True)  # 文章标题
+    author = models.CharField(max_length=50, default='Dongliu')  # 文章作者
+    visits = models.BigIntegerField(default=0)  # 访问次数
+    abstract = models.TextField(null=True)  # 文章摘要
+    markdown_text = models.TextField(default=' ')  # markdown文章正文
+    html_text = models.TextField(null=True, blank=True)  # html文章正文
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)  # 文章分类
+    tags = models.ManyToManyField(Tags)  # 文章标签(多对多关系)
 
     def __str__(self):
         return self.title
@@ -60,11 +46,12 @@ class Blog(TimeStampMixin):
         verbose_name_plural = "博客"
 
 
-class Micro_blog(TimeStampMixin):
-    # markdown文章正文
-    markdown_text = models.TextField()
-    # html文章正文
-    html_text = models.TextField(null=True, blank=True)
+class Micro_blog(models.Model):
+    private = models.BooleanField()  # 是否为仅仅自己可见
+    pubdate = models.DateTimeField(auto_now_add=True)  # 文章发布时间
+    modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
+    markdown_text = models.TextField()  # markdown文章正文
+    html_text = models.TextField(null=True, blank=True)  # html文章正文
 
     class Meta:
         ordering = ['-pubdate']
@@ -74,18 +61,27 @@ class Micro_blog(TimeStampMixin):
         return str(self.pubdate)
 
 
-# 一些特殊页面
-class Pages(TimeStampMixin):
-    name = models.CharField(max_length=20, unique=True)
-    # markdown文章正文
-    markdown_text = models.TextField(null=True, blank=True)
-    # html文章正文
-    html_text = models.TextField(null=True, blank=True)
+class PageCategories(models.Model):
+    name = models.CharField(max_length=20, default='markdown')
 
-    text_type = models.CharField(max_length=20, default='markdown')
+    class Meta:
+        verbose_name_plural = "页面类型"
+
+    def __str__(self):
+        return self.name
+
+
+# 一些特殊页面
+class Pages(models.Model):
+    pubdate = models.DateTimeField(auto_now_add=True)  # 文章发布时间
+    modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
+    title = models.CharField(max_length=20, unique=True)
+    markdown_text = models.TextField(null=True, blank=True)  # markdown文章正文
+    html_text = models.TextField(null=True, blank=True)  # html文章正文
+    page_type = models.ForeignKey(PageCategories, on_delete=models.CASCADE)     # 页面类型
 
     class Meta:
         verbose_name_plural = "特殊页面"
 
     def __str__(self):
-        return self.name
+        return self.title
