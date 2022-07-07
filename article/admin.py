@@ -27,6 +27,7 @@ class auto_update(admin.ModelAdmin):
 def update_blog(modeladmin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, True, True)
+        obj.save()
 
 
 class BlogAdmin(auto_update):
@@ -51,6 +52,7 @@ class PagesAdmin(auto_update):
 def update_micro_blog(modeladmin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, False, False)
+        obj.save()
 
 
 class MicroBlogAdmin(auto_update):
