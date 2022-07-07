@@ -52,13 +52,14 @@ class Micro_blog(models.Model):
     modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
     markdown_text = models.TextField()  # markdown文章正文
     html_text = models.TextField(null=True, blank=True)  # html文章正文
+    description = models.CharField(max_length=20, default="blank")
 
     class Meta:
         ordering = ['-pubdate']
         verbose_name_plural = "微博"
 
     def __str__(self):
-        return str(self.pubdate)
+        return self.description
 
 
 class PageCategories(models.Model):
