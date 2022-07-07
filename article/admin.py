@@ -24,7 +24,7 @@ class auto_update(admin.ModelAdmin):
 
 
 class BlogAdmin(auto_update):
-    list_display = ('title', 'category', 'visits', 'pubdate')
+    list_display = ('title', 'category', 'visits', 'pubdate', 'public')
     exclude = ('visits', 'html_text', 'updated')
 
 
@@ -40,7 +40,7 @@ class PagesAdmin(auto_update):
 
 
 class MicroBlogAdmin(auto_update):
-    list_display = ('description', 'pubdate', 'private')
+    list_display = ('description', 'pubdate', 'public')
     list_filter = ('pubdate',)
     exclude = ('html_text', 'updated')
 

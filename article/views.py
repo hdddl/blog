@@ -31,7 +31,7 @@ def index_page(request):
         get_page = 1
     get_page = int(get_page)
     if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
-        blog_object = blog_object.filter(private=False)
+        blog_object = blog_object.filter(public=True)
     if get_category:  # filter category
         blog_object = blog_object.filter(category__name=get_category)
     if get_tag:  # filter tag
@@ -68,7 +68,7 @@ def micro_blog_page(request):
     get_page = int(get_page)
     micro_blog_object = Micro_blog.objects
     if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
-        micro_blog_object = micro_blog_object.filter(private=False)
+        micro_blog_object = micro_blog_object.filter(public=True)
     micro_blog_object = micro_blog_object.values_list("html_text", "pubdate").order_by("-pubdate")[
                         (get_page - 1) * 10: 10 * get_page]
     for i in micro_blog_object:
@@ -119,7 +119,7 @@ def blog_article_page(request):
     title = request.GET.get("title")
     blog_object = Blog.objects
     if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
-        blog_object = blog_object.filter(private=False)
+        blog_object = blog_object.filter(public=True)
     content = blog_object.values_list("html_text").filter(
         title=title)
     if content:

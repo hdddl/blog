@@ -26,7 +26,7 @@ class Categories(models.Model):
 
 
 class Blog(models.Model):
-    private = models.BooleanField()     # 是否为仅仅自己可见
+    public = models.BooleanField(default=True)     # 是否公开
     pubdate = models.DateTimeField(auto_now_add=True)  # 文章发布时间
     modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
     title = models.CharField(max_length=50, unique=True)  # 文章标题
@@ -47,7 +47,7 @@ class Blog(models.Model):
 
 
 class Micro_blog(models.Model):
-    private = models.BooleanField()  # 是否为仅仅自己可见
+    public = models.BooleanField(default=True)  # 是否公开
     pubdate = models.DateTimeField(auto_now_add=True)  # 文章发布时间
     modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
     markdown_text = models.TextField()  # markdown文章正文
