@@ -52,7 +52,7 @@ class Micro_blog(models.Model):
     modify_date = models.DateTimeField(auto_now=True)  # 最近一次文章修改时间
     markdown_text = models.TextField()  # markdown文章正文
     html_text = models.TextField(null=True, blank=True)  # html文章正文
-    description = models.CharField(max_length=20, default="blank")
+    description = models.CharField(max_length=50, default="blank")
 
     class Meta:
         ordering = ['-pubdate']
