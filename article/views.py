@@ -106,7 +106,7 @@ def tags_page(request):
 
 # 关于页面
 def about_page(request):
-    about = Pages.objects.values_list("html_text").filter(name='about')
+    about = Pages.objects.values_list("html_text").filter(title='about')
     if about.exists():
         html_text = about[0]
         return HttpResponse(html_text)
