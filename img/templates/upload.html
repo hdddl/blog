@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +22,7 @@
             </a>
         </div>
     </nav>
-    <form action="/img/upload" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <form action="/img/upload" method="post" enctype="multipart/form-data"><input type="hidden" name="csrfmiddlewaretoken" value="xj5zuU4xvxyTBrf1o2VMKFJYn1JGZpEjCbZ8rVi3Xi3ZX2PQylWincWmrj800B95">
         <div class="flex justify-center mt-10">
           <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
               <div class="m-4">
@@ -50,9 +49,10 @@
                   <input type="text" id="name" name="name" class="shadow appearance-none border rounded  px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                   <label for="album" class="px-4 py-2 text-white bg-green-500 rounded shadow-xl">图片分类</label>
                   <select id="album" name="album" class="block appearance-none  bg-white border border-gray-200 text-gray-700  px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                      {% for key,value in album.items  %}
-                      <option value="{{ key }}">{{ value }}</option>
-                      {% endfor %}
+                      <option value="1">未分类</option>
+                      <option value="2">测试</option>
+                      <option value="3">博客</option>
+                      <option value="4">临时图片</option>
                   </select>
                   <button class="px-4 py-2 text-white bg-blue-500 rounded shadow-xl">Upload</button>
               </div>
@@ -61,15 +61,31 @@
     </form>
     <script>
         var changeName = function(){
-            var imageName = document.getElementById("image").files.item(0).name
-            var prompt = document.getElementById("prompt")
-            var name = document.getElementById("name")
-            prompt.textContent = imageName   // 修改提示语
-            name.value = imageName
+            var imageName = document.getElementById("image").files.item(0).name     // 获取文件名
+            for(let i = imageName.length - 1; i >= 0; i--){      // 去除文件后缀名
+                if(imageName[i] == '.'){
+                    imageName = imageName.substring(0, i);
+                    break;
+                }
+            }
+            let prompt = document.getElementById("prompt")
+            let name = document.getElementById("name")
+            prompt.textContent = imageName   // 选择提示语修改为文件名
+            name.value = imageName.split('.')   // 填充文件名
           }
+
           document.getElementById("image").onchange = function(){
               changeName()
           }
+
+          // 处理从剪切板上传
+          window.addEventListener("paste", e=>{
+            var imageInput = document.getElementById("image");
+            imageInput.files = e.clipboardData.files;
+            changeName();
+          })
+
+          // 处理拖拽上传
           var dropZone = document.getElementById("dropUpload")
           dropZone.addEventListener("dragover", function(e){
             e.preventDefault()
@@ -81,6 +97,5 @@
               changeName()
           });
       </script>
-
 </body>
 </html>
