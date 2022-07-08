@@ -21,6 +21,7 @@ def markdown2html(markdown_text, template=False, standalone=False):
         cmd.append('--template')
         cmd.append(template_url)
 
+    cmd.append("--toc")
     if standalone:
         cmd.append('-s')
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, input=markdown_text.encode('utf-8'))

@@ -37,12 +37,16 @@
     $for(header-includes)$
         $header-includes$
     $endfor$
-  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   </head>
 <body>
-$if(nav)$
 <!--导航栏-->
-<nav class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6">
+<nav
+class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6"
+$if(individual)$
+style="display:none"
+$endif$
+>
 <div class="lg:inline-block">
 <a href="/" class="text-lg">Dongliu</a>
 </div>
@@ -58,7 +62,6 @@ $if(nav)$
 </a>
 </div>
 </nav>
-$endif$
 <div class="mt-16 relative w-full px-10 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
 $for(include-before)$
 $include-before$
@@ -77,12 +80,12 @@ $if(date)$
 $endif$
 </header>
 $endif$
+<article class="prose prose-slate max-w-none prose-a:underline-offset-4 prose-pre:text-black prose-pre:bg-slate-100 lg:prose-lg mt-10 prose-img:mx-auto prose-figcaption:text-center">
 $if(toc)$
 <nav id="$idprefix$TOC">
 $table-of-contents$
 </nav>
 $endif$
-<article class="prose prose-slate max-w-none lg:prose-lg mt-10 prose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto prose-figcaption:text-center">
 $body$
 $for(include-after)$
 $include-after$
@@ -95,4 +98,3 @@ $endfor$
 </footer>-->
 </body>
 </html>
-
