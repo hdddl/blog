@@ -59,3 +59,37 @@ sudo apt install nginx
 
 #### 2. 通过Docker安装
 
+下载源码
+
+```sh
+git clone https://github.com/hdddl/SimbleBlog.git	# 下载源码
+```
+
+编辑配置文件
+
+```python
+HOST = "HOST"
+
+SECRET_KEY = "SECRET"
+
+DATABASES = {
+    'mysql': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'blog',
+        'USER': 'blog',
+        'PASSWORD': 'PASSWORD',
+        'HOST': 'HOST',
+        'PORT': 'PORT',
+        'OPTIONS': {
+            'charset': 'utf8mb4'
+        }
+    },
+    "default": {
+        'ENGINE': "django.db.backends.sqlite3",
+        'NAME': 'blog.sqlite3',
+    }
+}
+
+DEBUG = True
+```
+
