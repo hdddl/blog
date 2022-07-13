@@ -10,6 +10,6 @@ COPY script/blog.conf /etc/nginx/sites-enabled/default
 COPY . /app
 
 WORKDIR /app
-RUN pip install r requirements.txt
+RUN pip install -r requirements.txt
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:13248"]
