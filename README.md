@@ -31,6 +31,13 @@ git clone https://github.com/hdddl/SimbleBlog.git	# 下载源码
 
 编辑配置文件
 
+```shell
+cd SimbleBlog 
+vim ./blog/env.py
+```
+
+`HOST`为网站名称，`SECRET_KEY`可以随便填写最好复杂一些，database可以参考django官网上面的填法，这里默认使用`sqlite3`也提供了`MySQL`的模板
+
 ```python
 HOST = "HOST"
 
@@ -64,8 +71,9 @@ sudo docker-compose up
 ```shell
 sudo docker-compose exec blog python manage.py migrate
 ```
-创建username
+创建 super user
 ```shell
 sudo docker-compose exec blog python manage.py createsuperuser
 ```
 
+现在就可以在`13248`端口访问博客了
