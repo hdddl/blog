@@ -6,7 +6,7 @@ RUN apt-get -y update
 RUN apt-get -y install pandoc
 RUN apt-get -y install nginx
 
-COPY script/blog.conf /etc/nginx/sites-enabled/
+COPY script/blog.conf /etc/nginx/sites-enabled/default
 COPY . /app
 
 WORKDIR /app
