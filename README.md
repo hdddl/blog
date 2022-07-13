@@ -21,43 +21,7 @@
 - [x] 支持通过Docker安装
 - [ ] 支持黑夜模式
 
-## 开始使用
-
-#### 1. 直接安装
-
-首先安装`Mysql`数据库
-
-```shell
-sudo apt install mysql
-```
-
-安装`Pandoc`用于`Markdown`渲染
-
-```shell
-sudo apt install pandoc
-```
-
-下载源码安装
-
-```shell
-git clone https://github.com/hdddl/SimbleBlog.git	# 下载源码
-cd SimbleBlog
-pip3 install -r requirements.txt		# 安装Django
-```
-
-安装`Nginx`进行反向代理
-
-```shell
-sudo apt install nginx
-```
-
-配置`Nginx`
-
-```
-
-```
-
-#### 2. 通过Docker安装
+## 通过Docker安装
 
 下载源码
 
@@ -91,5 +55,17 @@ DATABASES = {
 }
 
 DEBUG = True
+```
+通过Docker构建
+```shell
+sudo docker-compose up
+```
+数据库迁移
+```shell
+sudo docker-compose exec blog python manage.py migrate
+```
+创建username
+```shell
+sudo docker-compose exec blog python manage.py createsuperuser
 ```
 
