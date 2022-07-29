@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from urllib.parse import quote
 from django.http import HttpResponse
 from article.models import Blog, Micro_blog, Tags, Categories, Pages
 
@@ -9,7 +10,7 @@ def index_page(request):
     categories = []
     for i in Categories.objects.values("name"):
         metadata = {
-            "url": "?category=" + i['name'],
+            "url": "?category=" + quote(i['name']),
             "name": i['name']
         }
         categories.append(metadata)
@@ -17,10 +18,11 @@ def index_page(request):
     tags = []
     for i in Tags.objects.values("name"):
         metadata = {
-            "url": "?tag=" + i['name'],
+            "url": "?tag=" + quote(i['name']),
             "name": i['name']
         }
         tags.append(metadata)
+
     # get blog
     blogs = []
     blog_object = Blog.objects
@@ -44,7 +46,7 @@ def index_page(request):
             "title": title,
             "date": date,
             "abstract": abstract,
-            "url": "/blog?title=" + title
+            "url": "/blog?title=" + quote(title)
         }
         blogs.append(metadata)
     context = {
@@ -120,12 +122,11 @@ def blog_article_page(request):
     blog_object = Blog.objects
     if not request.user.is_authenticated:   # 对未登入用户隐藏私密文章与博客
         blog_object = blog_object.filter(public=True)
-    content = blog_object.values_list("html_text").filter(
-        title=title)
+    content = blog_object.filter(title=title)
     if content:
-        html_text = content[0]
         # 记录访客数
         model = Blog.objects.filter(title=title)[0]
+        html_text = model.html_text
         model.visits += 1
         model.save()
         return HttpResponse(html_text)

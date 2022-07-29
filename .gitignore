@@ -1,8 +1,8 @@
 env.py
-__pycache__/
 *.pyc
-.idea/
-static/
 mermaid-filter.err
+.idea/
+__pycache__/
+static/
 media/
 test/
