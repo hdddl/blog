@@ -25,10 +25,13 @@ class auto_update(admin.ModelAdmin):
 
 class BooksAdmin(admin.ModelAdmin):
     list_display = ('title', 'author')
+    search_fields = ('title', 'author')
 
 
 class NotesAdmin(admin.ModelAdmin):
     list_display = ('book_name', 'content')
+    list_filter = ('book_name',)
+    search_fields = ('book_name', 'content')
 
 
 class KindNotesAdmin(auto_update):
