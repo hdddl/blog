@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     "article.apps.ArticleConfig",
     "img.apps.ImgConfig",
+    "reading.apps.ReadingConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
