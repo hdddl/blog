@@ -10,7 +10,6 @@ class auto_update(admin.ModelAdmin):
             book = Books()
             book.title = i['name']
             book.author = i['author']
-            book.note_nums = i['nums']
             book.save()
             for j in i['marks']:
                 note = Notes()

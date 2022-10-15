@@ -13,7 +13,7 @@ def book_index(request):
             {
                 "title": i.title,
                 "author": i.author,
-                "nums": i.note_nums,
+                "nums": Notes.objects.filter(book_name__title=i.title).count(),
                 "url": "/reading/notes?title=" + quote(i.title)
             }
         )
