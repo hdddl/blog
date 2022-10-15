@@ -30,4 +30,4 @@ def book_notes(request):
             "date": i.note_time,
             "location": i.note_location
         })
-    return render(request, "reading_notes.html", context={"notes": notes})
+    return render(request, "reading_notes.html", context={"notes": notes, "title": title})
