@@ -1,37 +1,7 @@
-<!DOCTYPE html>
-<html lang="zh-cmn">
-  <head>
-      <meta charset="utf-8" />
-      <meta name="generator" content="pandoc" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-      <title>404</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <!--导航栏-->
-    <nav class="flex justify-between shadow-sm rounded-xl py-4 bg-neutral-100 p-6">
-        <div class="lg:inline-block">
-            <a href="/" class="text-lg">Dongliu</a>
-        </div>
-        <div class="lg:justify-end">
-            <a href="/" class=" mt-4 lg:inline-block lg:mt-0 text-black mr-4">
-                博客
-            </a>
-            <a href="/micro_blog" class=" mt-4 lg:inline-block lg:mt-0 text-black mr-4">
-                微博
-            </a>
-            <a href="/about" class=" mt-4 lg:inline-block lg:mt-0 text-black">
-                关于
-            </a>
-        </div>
-    </nav>
-    <div class="flex h-80 justify-center items-center">    
+{% extends "base.html" %}
+{% block title %}404 Not Found{% endblock %}
+{% block body %}
+    <div class="flex h-80 justify-center items-center">
         <h1>404 Not Found</h1>
-
-    </div>  
-    <!--底部声名
-    <footer class="relative bottom-0 w-full text-center mt-10">
-        © Powered by <a href="https://github.com/HuangDongliu-DL" class="hover:text-blue-600">东流</a>
-    </footer>-->
-  </body>
-</html>
+    </div>
+{% endblock %}
