@@ -7,10 +7,12 @@ class auto_update(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         data = render(obj.content)      # 渲染获得数据
         for i in data:
-            book = Books()
-            book.title = i['name']
-            book.author = i['author']
-            book.save()
+            book = Books.objects.filter(title = i['name'])
+            if not book:
+                book = Books()
+                book.title = i['name']
+                book.author = i['author']
+                book.save()
             for j in i['marks']:
                 note = Notes()
                 note.note_time = j['time']
