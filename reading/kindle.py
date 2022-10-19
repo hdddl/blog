@@ -1,11 +1,9 @@
 import re
 
 DELIMITER = u"==========\r\n"
-all_books = []
-all_marks = []
 
 
-def get_book_index(book_name):
+def get_book_index(book_name, all_books):
     """get book's index"""
     for i in range(len(all_books)):
         if all_books[i]["name"] == book_name:
@@ -14,8 +12,9 @@ def get_book_index(book_name):
 
 
 def render(content):
-    global all_marks
-    global all_books
+    all_books = []
+    all_marks = []
+
     content = content.replace("\r\n\r\n", "\n")
     all_marks = content.split(DELIMITER)
     for i in range(len(all_marks)):
@@ -29,7 +28,7 @@ def render(content):
             mark_address = mark_info[0].strip("- ")
             mark_content = mark[2]
 
-            book_index = get_book_index(book_name)
+            book_index = get_book_index(book_name, all_books)
             if book_index == -1:
                 all_books.append(
                     {

@@ -5,12 +5,16 @@ from reading.kindle import render
 
 class auto_update(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
-        data = render(obj.content)      # 渲染获得数据
+        data = render(obj.content)  # 渲染获得数据
         for i in data:
-            book = Books.objects.filter(title = i['name'])
-            if not book:
+            title = i['name'].rstrip().lstrip().replace("\ufeff", '')
+            book = Books.objects.filter(title=title)
+            print(book)
+            if book:
+                book = book[0]
+            else:
                 book = Books()
-                book.title = i['name']
+                book.title = title
                 book.author = i['author']
                 book.save()
             for j in i['marks']:
