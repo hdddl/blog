@@ -24,7 +24,7 @@ class auto_update(admin.ModelAdmin):
 
 
 # 批量更新博客
-def update_blog(modeladmin, request, queryset):
+def update_blog(model_admin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, True, True)
         obj.save()
@@ -33,6 +33,7 @@ def update_blog(modeladmin, request, queryset):
 class BlogAdmin(auto_update):
     list_display = ('title', 'category', 'visits', 'pubdate', 'public')
     exclude = ('visits', 'html_text', 'updated')
+    search_fields = ('title', )
     actions = [update_blog]
 
 
@@ -49,7 +50,7 @@ class PagesAdmin(auto_update):
 
 
 # 批量更新博客
-def update_micro_blog(modeladmin, request, queryset):
+def update_micro_blog(model_admin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, False, False)
         obj.save()
@@ -60,6 +61,7 @@ class MicroBlogAdmin(auto_update):
     list_filter = ('pubdate',)
     exclude = ('html_text', 'updated')
     actions = [update_micro_blog]
+    search_fields = ('description', 'markdown_text')
 
 
 admin.site.register(Blog, BlogAdmin)
