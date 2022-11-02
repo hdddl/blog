@@ -2,6 +2,8 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
+from urllib.parse import quote
+
 from article.models import Blog, Micro_blog, Categories, Tags, Pages, PageCategories
 from article.convert import markdown2html
 from blog.env import HOST
@@ -30,10 +32,16 @@ def update_blog(model_admin, request, queryset):
         obj.save()
 
 
+# 用于显示文章URL
+def article_url(obj):
+    url = HOST + "/blog?title=" + quote(obj.title)
+    return mark_safe('<a href="%s" target="_blank">redirect</a>' % url)
+
+
 class BlogAdmin(auto_update):
-    list_display = ('title', 'category', 'visits', 'pubdate', 'public')
+    list_display = ('title', 'category', 'visits', 'pubdate', 'public', article_url)
     exclude = ('visits', 'html_text', 'updated')
-    search_fields = ('title', )
+    search_fields = ('title',)
     actions = [update_blog]
 
 
