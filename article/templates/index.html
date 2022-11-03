@@ -41,17 +41,45 @@
         <div class="mt-10 relative flex justify-center">
           <nav aria-label="Page navigation example">
             <ul class="flex list-style-none">
-              <li class="page-item"><a
-                      href="?page={{ page.previous }}"
-                      class="disable page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-              >Previous</a></li>
-              <li class="page-item"><a
-                      href="?page={{ page.next }}"
-                      class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-              >Next</a></li>
+              <li class="page-item">
+                  <a
+                      id = "prevPage"
+                      class="disable page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none">
+                      Previous
+                  </a></li>
+              <li class="page-item">
+                  <a
+                      id = "nextPage"
+                      class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none">
+                      Next
+                  </a>
+              </li>
             </ul>
           </nav>
         </div>
     </div>
+
+    <script>
+        function getPage(key){          // query url parameter
+            const queryString = window.location.search
+            const urlParams = new URLSearchParams(queryString)
+            return urlParams.get(key)
+        }
+
+        let currentPage = getPage("page")
+        if(currentPage == null){
+            currentPage = 1
+        }else{
+            currentPage = parseInt(currentPage)     // convert string to int
+        }
+
+        document.getElementById("nextPage").href = "?page=" + (currentPage + 1)
+        if(currentPage > 1){
+            document.getElementById("prevPage").href = "?page=" + (currentPage - 1)
+        }else{
+            document.getElementById("prevPage").href = "?page=" + currentPage
+        }
+
+    </script>
 
 {% endblock %}
