@@ -76,18 +76,29 @@ def index_page(request):
     return render(request, "index.html", context=context)
 
 
+def micro_blog_filter(search_key, page, auth):
+    micro_blog_object = Micro_blog.objects
+    if search_key:
+        micro_blog_object = micro_blog_object.filter(markdown_text__contains=search_key)
+    if not page or not page.isdigit():
+        page = 1
+    if not auth:
+        micro_blog_object = micro_blog_object.filter(public=True)
+    page = int(page)
+    micro_blog_object = micro_blog_object.values_list("html_text", "pubdate").order_by("-pubdate")[
+                        (page - 1) * 10: 10 * page]
+    return micro_blog_object
+
+
 # 微博页
 def micro_blog_page(request):
+    micro_blog_object = micro_blog_filter(
+        search_key=request.GET.get("search"),
+        page=request.GET.get('page'),
+        auth=request.user.is_authenticated
+    )
+
     micro_blogs = []
-    get_page = request.GET.get('page')
-    if not get_page or not get_page.isdigit():
-        get_page = 1
-    get_page = int(get_page)
-    micro_blog_object = Micro_blog.objects
-    if not request.user.is_authenticated:  # 对未登入用户隐藏私密文章与博客
-        micro_blog_object = micro_blog_object.filter(public=True)
-    micro_blog_object = micro_blog_object.values_list("html_text", "pubdate").order_by("-pubdate")[
-                        (get_page - 1) * 10: 10 * get_page]
     for i in micro_blog_object:
         text, pubdate = i
         metadata = {
@@ -95,11 +106,8 @@ def micro_blog_page(request):
             "date": pubdate
         }
         micro_blogs.append(metadata)
-    context = {
-        "microBlogs": micro_blogs,
-    }
 
-    return render(request, "weibo.html", context=context)
+    return render(request, "weibo.html", context={"microBlogs": micro_blogs})
 
 
 # 404页面

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "navigation.html" %}
 {% block title %}Dongliu图床{% endblock %}
 {% block body %}
     <form action="/img/upload" method="post" enctype="multipart/form-data">{% csrf_token %}

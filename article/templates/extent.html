@@ -1,0 +1,110 @@
+{% extends 'navigation.html' %}
+
+{% block search %}
+    <form class="hidden lg:block">
+        <label for="search" class="text-sm font-medium text-gray-900 sr-only">Search</label>
+        <div class="relative">
+            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                <svg aria-hidden="true" class="w-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input
+                    type="search"
+                    id="search"
+                    class="block p-2 pl-10 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
+                    placeholder="搜索"
+                    required
+            >
+            <button type="submit"
+                    id="search_btn"
+                    class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >Go</button>
+        </div>
+    </form>
+    <script>
+        function hasParameter(){        // 检测是否有参数
+            let arr = window.location.href.split('?')
+            return arr.length > 1 && arr[1] !== ''
+        }
+
+        let btn = document.getElementById("search_btn")
+        btn.onclick = function (){
+            let text = document.getElementById("search").value
+            if(text === ""){return false}       // 对空字符串不做响应
+            let queryString = window.location.search
+            const urlParams = new URLSearchParams(queryString)
+            urlParams.set("search", text)
+            let url
+            if(!hasParameter()){
+                url = window.location.href + "?" + urlParams.toString()
+            }else{
+                url = window.location.href.split("?")[0] + "?" + urlParams.toString()
+            }
+            window.location.href = url
+            return false
+        }
+    </script>
+{% endblock %}
+
+{% block pages %}
+    <div class="mt-10 relative flex justify-center">
+        <nav aria-label="Page navigation example">
+        <ul class="flex list-style-none">
+            <li class="page-item">
+                <button
+                  id = "prevPage"
+                  class="disable page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none">
+                  Previous
+                </button>
+            </li>
+            <li class="page-item">
+                <button id = "nextPage"
+                   class="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded-full text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none">
+                    Next
+                </button>
+            </li>
+        </ul>
+      </nav>
+    </div>
+    <script>
+        function currentPage(){     // 获取当前页面编号
+            const queryString = window.location.search
+            const urlParams = new URLSearchParams(queryString)
+            let page = urlParams.get("page")
+            if(page == null) {
+                return 1
+            }
+            return parseInt(page)
+        }
+        function hasParameter(){        // 检测是否有参数
+            let arr = window.location.href.split('?')
+            return arr.length > 1 && arr[1] !== ''
+        }
+
+
+        document.getElementById("prevPage").onclick = function (){       // 前一页
+            if(!hasParameter()){        // 如果没有参数
+                return false
+            }
+            let page = currentPage()
+            if(page < 2){return false}
+            const queryString = window.location.search
+            const urlParams = new URLSearchParams(queryString)
+            urlParams.set("page", (page - 1).toString())
+            window.location.href = "?" + urlParams.toString()
+        }
+
+        document.getElementById("nextPage").onclick = function (){      // 后一页
+            let url
+            if(hasParameter()){     // 如果有参数
+                const queryString = window.location.search
+                const urlParams = new URLSearchParams(queryString)
+                urlParams.set("page", currentPage() + 1)
+                url = "?" +  urlParams.toString()
+            }else{
+                url = "?page=" + (currentPage() + 1)
+            }
+            document.location.href = url
+        }
+
+    </script>
+{% endblock %}
