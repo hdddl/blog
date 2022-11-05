@@ -4,7 +4,7 @@
     <div class="mt-6" id="app">
         {% for microBlog in microBlogs %}
         <div class="mt-6">
-            <div class="mt-16 relative w-full px-10 py-12 lg:bg-white lg:rounded-lg lg:shadow-lg ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
+            <div class="mt-16 relative w-full px-10 py-12 bg-white rounded-lg shadow-lg ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-6xl lg:pt-16 lg:pb-28">
                     <article class="prose prose-slate max-w-none lg:prose-lg prose-img:mx-auto prose-img:rounded-xl prose-img:shadow-lg">
                         {{ microBlog.text|safe }}
                       </article>
