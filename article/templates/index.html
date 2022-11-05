@@ -3,7 +3,7 @@
 
 {% block body %}
     <div class="mt-10" id="app">
-        <div class="w-1/6 float-right mr-12 mt-6 hidden lg:block">
+        <div class="w-1/5 float-right mr-12 mt-6 hidden lg:block">
             <!--分类-->
             <div class=" shadow-lg rounded-lg bg-white">
                 <h1 class="text-center px-6 py-2 bg-blue-400 text-white rounded-t-lg">categories</h1>
@@ -16,7 +16,7 @@
             <!--标签--> 
             <div class="shadow-lg rounded-lg bg-white mt-10">
                 <h1 class="text-center px-6 py-2 bg-blue-400 text-white rounded-t-lg">tags</h1>
-                <div class="grid grid-cols-5  gap-2 mt-4 ml-1 mr-1">
+                <div class="grid grid-cols-5 gap-2 mt-3 pl-2 pr-2">
                     {% for tag in tags %}
                         <div>
                             <a  href="{{ tag.url }}" class="inline-block text-center w-full py-1.5 bg-sky-400 text-white font-medium text-xs leading-tight rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">{{ tag.name }}</a>

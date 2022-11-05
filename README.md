@@ -19,6 +19,7 @@
 - [x] 集成简易图床，支持网页上传于命令行上传
 - [x] 支持Typora插件上传图片
 - [x] 支持通过Docker安装
+- [x] 支持 Kindle 笔记
 - [ ] 支持黑夜模式
 
 ## 通过Docker安装
@@ -77,3 +78,18 @@ sudo docker-compose exec blog python manage.py createsuperuser
 ```
 
 现在就可以在`13248`端口访问博客了
+
+
+
+备份数据
+
+```shell
+python3 manage.py dumpdata > backup.json
+```
+
+恢复数据
+
+```shell
+python3 manage.py loaddata db.json
+```
+

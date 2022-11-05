@@ -26,6 +26,7 @@ class auto_update(admin.ModelAdmin):
 
 
 # 批量更新博客
+@admin.action(description="刷新")
 def update_blog(model_admin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, True, True)
@@ -45,6 +46,7 @@ class BlogAdmin(auto_update):
     actions = [update_blog]
 
 
+
 # 生成页面跳转URL
 def page_url(obj):
     url = HOST + "/api/pages?name=" + obj.title
@@ -58,6 +60,7 @@ class PagesAdmin(auto_update):
 
 
 # 批量更新博客
+@admin.action(description="刷新")
 def update_micro_blog(model_admin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, False, False)
