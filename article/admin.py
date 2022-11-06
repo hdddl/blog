@@ -26,10 +26,24 @@ class auto_update(admin.ModelAdmin):
 
 
 # 批量更新博客
-@admin.action(description="刷新")
+@admin.action(description="刷新博客")
 def update_blog(model_admin, request, queryset):
     for obj in queryset:
         obj.html_text = markdown2html(obj.markdown_text, True, True)
+        obj.save()
+
+
+@admin.action("设置为登入可见")
+def set_private(model_admin, request,  queryset):
+    for obj in queryset:
+        obj.public = False
+        obj.save()
+
+
+@admin.action("设置为公开可见")
+def set_public(model_admin, request,  queryset):
+    for obj in queryset:
+        obj.public = True
         obj.save()
 
 
@@ -44,7 +58,6 @@ class BlogAdmin(auto_update):
     exclude = ('visits', 'html_text', 'updated')
     search_fields = ('title',)
     actions = [update_blog]
-
 
 
 # 生成页面跳转URL
