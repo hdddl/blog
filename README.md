@@ -90,6 +90,6 @@ python3 manage.py dumpdata > backup.json
 恢复数据
 
 ```shell
-python3 manage.py loaddata db.json
+python3 manage.py loaddata backup.json
 ```
 

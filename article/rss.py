@@ -4,9 +4,6 @@ from django.contrib.syndication.views import Feed
 from article.models import Blog, Micro_blog
 
 
-def items():
-    return Blog.objects.order_by("-pubdate")[:5]
-
 
 class LatestBlogsFeed(Feed):
     """
@@ -16,7 +13,7 @@ class LatestBlogsFeed(Feed):
     link = "/"
     description = "青山遮不住，毕竟东流去。"
     def items(self):
-        return Blog.objects.order_by("-pubdate")[0:5]
+        return Blog.objects.order_by("-pubdate").filter(public=False)[0:5]
 
     def item_title(self, item):
         return item.title
@@ -37,7 +34,7 @@ class LatestMicroBlogFeed(Feed):
     description = "一些胡言乱语罢了"
 
     def items(self):
-        return Micro_blog.objects.order_by("-pubdate")[0:5]
+        return Micro_blog.objects.order_by("-pubdate").filter(public=False)[0:5]
 
     def item_title(self, item):
         return item.pubdate  # 因为微博没有title就用时间来代替了
