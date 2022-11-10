@@ -43,10 +43,12 @@ def blog_filter(tag, category, search_key, page, auth):
         page = 1
     else:
         page = int(page)
-    blog_object = blog_object.values_list("title", "pubdate", "abstract").order_by("-pubdate")[
+    blog_object = blog_object.values_list("title", "pubdate", "abstract", "public").order_by("-pubdate")[
                   (page - 1) * 10: 10 * page]
     return blog_object
 
+
+# 在非公开博客后面加上一个后缀
 
 # 网站首页
 def index_page(request):
@@ -60,9 +62,12 @@ def index_page(request):
 
     blogs = []
     for i in blog_object:
-        title, date, abstract = i
+        title, date, abstract, public = i
+        display_title = title       # 用于显示的标题
+        if not public:
+            display_title = "[非公开] " + title
         metadata = {
-            "title": title,
+            "title": display_title,
             "date": date,
             "abstract": abstract,
             "url": "/blog?title=" + quote(title)
@@ -97,7 +102,6 @@ def micro_blog_page(request):
         page=request.GET.get('page'),
         auth=request.user.is_authenticated
     )
-
     micro_blogs = []
     for i in micro_blog_object:
         text, pubdate = i

@@ -33,14 +33,14 @@ def update_blog(model_admin, request, queryset):
         obj.save()
 
 
-@admin.action("设置为登入可见")
+@admin.action(description="设置为登入可见")
 def set_private(model_admin, request,  queryset):
     for obj in queryset:
         obj.public = False
         obj.save()
 
 
-@admin.action("设置为公开可见")
+@admin.action(description="设置为公开可见")
 def set_public(model_admin, request,  queryset):
     for obj in queryset:
         obj.public = True
@@ -57,7 +57,7 @@ class BlogAdmin(auto_update):
     list_display = ('title', 'category', 'visits', 'pubdate', 'public', article_url)
     exclude = ('visits', 'html_text', 'updated')
     search_fields = ('title',)
-    actions = [update_blog]
+    actions = [update_blog, set_public, set_private]
 
 
 # 生成页面跳转URL
