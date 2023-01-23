@@ -10,7 +10,7 @@ class KindNotes(models.Model):
 
 # 书籍
 class Books(models.Model):
-    title = models.CharField(max_length=50, verbose_name="书名", unique=True)         # 书名应该是唯一的
+    title = models.CharField(max_length=100, verbose_name="书名", unique=True)         # 书名应该是唯一的
     author = models.CharField(max_length=20, verbose_name="作者")
 
     def __str__(self):
