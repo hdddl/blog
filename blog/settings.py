@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "article.apps.ArticleConfig",
     "img.apps.ImgConfig",
     "reading.apps.ReadingConfig",
+    "diary.apps.DiaryConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -96,7 +97,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
