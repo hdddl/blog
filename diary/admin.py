@@ -18,10 +18,18 @@ def diary_url(obj):
     return mark_safe('<a href="%s" target="_blank">redirect</a>' % url)
 
 
+@admin.action(description="刷新")
+def update_diary(model_admin, request, queryset):
+    for obj in queryset:
+        obj.html_text = markdown2html(obj.markdown_text, template=True, standalone=True)
+        obj.save()
+
+
 class DiaryAdmin(auto_update):
     list_display = ('pubDate', 'desc', diary_url)
     search_fields = ('pubData',)
     exclude = ('html_text',)
+    actions = [update_diary]
 
 
 admin.site.register(Diary, DiaryAdmin)
