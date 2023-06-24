@@ -6,7 +6,7 @@ from django.db import models
 class Diary(models.Model):
     markdown_text = models.TextField(verbose_name="日记内容 MarkDown")
     html_text = models.TextField(verbose_name="日记内容 HTML")
-    desc = models.CharField(max_length=100, verbose_name="描述", default="无")
+    desc = models.CharField(max_length=100, verbose_name="描述", default=" ", blank=True)
     pubDate = models.DateField(verbose_name="日记时间")
 
     def __str__(self):

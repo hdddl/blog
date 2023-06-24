@@ -6,6 +6,7 @@
             {% for diary in diaries %}
             <div class="mt-16 relative w-full px-10 py-12 bg-white rounded-lg shadow-lg md:max-w-3xl md:mx-auto lg:max-w-6xl hover:bg-sky-100">
                     <a href="{{ diary.url }}">{{ diary.date }}</a>
+                    <p class="text-right">{{ diary.desc }}</p>
             </div>
             {% endfor %}
         </div>

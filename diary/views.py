@@ -10,10 +10,11 @@ def diary_index(request):
     if not request.user.is_authenticated:
         return render(request, "prohibit.html")
     diaries = []
-    for i in Diary.objects.all():
+    for i in Diary.objects.all()[::-1]:
         diaries.append({
             "date": i.pubDate,
-            "url": HOST + "/diary/diary?date=" + str(i.pubDate)
+            "url": HOST + "/diary/diary?date=" + str(i.pubDate),
+            "desc": i.desc,
         })
     return render(request, "diary_context.html", context={"diaries": diaries})
 
