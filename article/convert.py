@@ -5,7 +5,7 @@ from blog.env import HOST, DEBUG
 
 def markdown2html(markdown_text, template=False, standalone=False):
     mathjax_url = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    template_url = HOST + "/api/pages?name=template"
+    template_url = HOST + "/static/template.html"
     cmd = [
         'pandoc',
         '-f', 'markdown+implicit_figures',

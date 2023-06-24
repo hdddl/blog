@@ -8,18 +8,18 @@ from blog.env import HOST
 
 def diary_index(request):
     if not request.user.is_authenticated:
-        return HttpResponse("404 Not found")
+        return render(request, "prohibit.html")
     diaries = []
     for i in Diary.objects.all():
         diaries.append({
-            "date": i.pubData,
-            "url": HOST + "/diary/diary?date=" + str(i.pubData)
+            "date": i.pubDate,
+            "url": HOST + "/diary/diary?date=" + str(i.pubDate)
         })
     return render(request, "diary_context.html", context={"diaries": diaries})
 
 
 def diary_context(request):
     if not request.user.is_authenticated:
-        return HttpResponse("404 Not found")
-    diary_obj = Diary.objects.filter(pubData=request.GET.get("date"))[0]
+        return render(request, "prohibit.html")
+    diary_obj = Diary.objects.filter(pubDate=request.GET.get("date"))[0]
     return HttpResponse(diary_obj.html_text)
